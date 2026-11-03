@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/components/ui/primitives.tsx","./src/lib/api.ts","./src/lib/vercelfallbackengine.ts","./src/pages/datamanagementpage.tsx","./src/pages/forecastexplorerpage.tsx","./src/pages/modelcomparisonpage.tsx","./src/pages/overviewpage.tsx","./src/pages/trendsinsightspage.tsx","./src/types/api.ts"],"version":"5.7.3"}

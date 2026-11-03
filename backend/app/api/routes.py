@@ -1,0 +1,241 @@
+"""FastAPI route definitions for Safeguarding Forecast AI."""
+from datetime import datetime, timezone
+import json
+from typing import Any, Dict, Optional
+import uuid
+from fastapi import APIRouter, File, Form, HTTPException, Query, UploadFile
+from fastapi.responses import PlainTextResponse
+from pydantic import BaseModel
+from app.core.database import IMPORTED_BANNER, SYNTHETIC_BANNER
+from app.data.processor import validate_and_parse_csv
+from app.data.synthetic_generator import generate_synthetic_safeguarding_dataset
+from app.schemas.models import (
+    BacktestResponse,
+    DatasetSummaryResponse,
+    DataValidationReport,
+    ForecastRequest,
+    ForecastResponse,
+    HealthResponse,
+    HistoricalStatsResponse,
+    ModelsAvailabilityResponse,
+    SyntheticGeneratorConfig,
+    TrendsInsightsResponse,
+)
+from app.services.forecast_service import platform_service
+
+router = APIRouter(prefix="/api")
+
+
+class ConfigUpdateRequest(BaseModel):
+    academic_year_start_month: Optional[int] = None
+    governance_mode: Optional[str] = None
+    timesfm_license_acknowledged: Optional[bool] = None
+    small_group_suppression_enabled: Optional[bool] = None
+
+
+class SwitchDatasetRequest(BaseModel):
+    dataset_id: str
+
+
+@router.get("/health", response_model=HealthResponse)
+def get_health() -> HealthResponse:
+    info, _ = platform_service.get_active_dataset_and_df()
+    is_synth = bool(info["is_synthetic"])
+    ay_start = int(
+        platform_service.db.get_config("academic_year_start_month", str(info["academic_year_start_month"])) or 9
+    )
+    return HealthResponse(
+        status="healthy",
+        application="Safeguarding Forecast AI",
+        subtitle="Predictive Safeguarding Demand Intelligence",
+        organisation="South Devon College",
+        active_dataset_id=info["dataset_id"],
+        is_synthetic=is_synth,
+        governance_banner=SYNTHETIC_BANNER if is_synth else IMPORTED_BANNER,
+        academic_year_start_month=ay_start,
+        timestamp=datetime.now(timezone.utc).isoformat(),
+    )
+
+
+@router.get("/dataset/summary", response_model=DatasetSummaryResponse)
+def get_dataset_summary() -> DatasetSummaryResponse:
+    return platform_service.get_active_dataset_summary()
+
+
+@router.post("/dataset/synthetic", response_model=DatasetSummaryResponse)
+def generate_synthetic_data(config: SyntheticGeneratorConfig) -> DatasetSummaryResponse:
+    return platform_service.regenerate_synthetic_dataset(config)
+
+
+@router.post("/dataset/switch", response_model=DatasetSummaryResponse)
+def switch_active_dataset(req: SwitchDatasetRequest) -> DatasetSummaryResponse:
+    if not platform_service.db.dataset_exists(req.dataset_id):
+        raise HTTPException(status_code=404, detail=f"Dataset '{req.dataset_id}' not found.")
+    platform_service.db.set_config("active_dataset_id", req.dataset_id)
+    platform_service.clear_caches()
+    return platform_service.get_active_dataset_summary()
+
+
+@router.post("/config/update")
+def update_configuration(req: ConfigUpdateRequest) -> Dict[str, Any]:
+    if req.academic_year_start_month is not None:
+        if not (1 <= req.academic_year_start_month <= 12):
+            raise HTTPException(status_code=400, detail="academic_year_start_month must be between 1 and 12.")
+        platform_service.db.set_config("academic_year_start_month", str(req.academic_year_start_month))
+    if req.governance_mode is not None:
+        if req.governance_mode not in ("research_prototype", "operational_production"):
+            raise HTTPException(
+                status_code=400,
+                detail="governance_mode must be 'research_prototype' or 'operational_production'.",
+            )
+        platform_service.db.set_config("governance_mode", req.governance_mode)
+    if req.timesfm_license_acknowledged is not None:
+        platform_service.db.set_config(
+            "timesfm_license_acknowledged", "true" if req.timesfm_license_acknowledged else "false"
+        )
+    if req.small_group_suppression_enabled is not None:
+        platform_service.db.set_config(
+            "small_group_suppression_enabled", "true" if req.small_group_suppression_enabled else "false"
+        )
+    platform_service.clear_caches()
+    return {
+        "status": "updated",
+        "configs": platform_service.db.get_all_configs(),
+        "models_availability": platform_service.get_models_availability(),
+    }
+
+
+@router.post("/dataset/validate-csv", response_model=DataValidationReport)
+async def validate_csv_upload(
+    file: UploadFile = File(...),
+    column_mapping_json: Optional[str] = Form(default=None),
+) -> DataValidationReport:
+    content = await file.read()
+    mapping = json.loads(column_mapping_json) if column_mapping_json else None
+    ay_start = int(platform_service.db.get_config("academic_year_start_month", "9") or 9)
+    report, _ = validate_and_parse_csv(content, column_mapping=mapping, academic_year_start_month=ay_start)
+    return report
+
+
+@router.post("/dataset/import-csv", response_model=DatasetSummaryResponse)
+async def import_csv_upload(
+    file: UploadFile = File(...),
+    dataset_name: Optional[str] = Form(default=None),
+    column_mapping_json: Optional[str] = Form(default=None),
+) -> DatasetSummaryResponse:
+    content = await file.read()
+    mapping = json.loads(column_mapping_json) if column_mapping_json else None
+    ay_start = int(platform_service.db.get_config("academic_year_start_month", "9") or 9)
+    report, norm_df = validate_and_parse_csv(content, column_mapping=mapping, academic_year_start_month=ay_start)
+    if not report.can_import or norm_df is None:
+        err_msgs = "; ".join(i.message for i in report.issues if i.severity == "error")
+        raise HTTPException(
+            status_code=400,
+            detail=f"CSV failed validation and cannot be imported: {err_msgs or 'Insufficient valid data.'}",
+        )
+
+    # Save into a separate imported dataset slot (never combining with synthetic demo data)
+    imported_id = f"imported_{uuid.uuid4().hex[:8]}"
+    clean_name = (dataset_name or file.filename or "Imported College Dataset").strip()
+    platform_service.db.save_dataset(
+        dataset_id=imported_id,
+        name=f"Imported: {clean_name}",
+        df=norm_df,
+        is_synthetic=False,
+        seed=None,
+        academic_year_start_month=ay_start,
+        metadata={"filename": file.filename, "row_count": len(norm_df)},
+    )
+    platform_service.db.set_config("active_dataset_id", imported_id)
+    platform_service.clear_caches()
+    return platform_service.get_active_dataset_summary()
+
+
+@router.get("/dataset/sample-csv", response_class=PlainTextResponse)
+def download_sample_csv_template() -> PlainTextResponse:
+    """Generate a downloadable 4-academic-year aggregated sample CSV template following the recommended schema."""
+    sample_cfg = SyntheticGeneratorConfig(
+        seed=101,
+        num_academic_years=4,
+        start_academic_year=2022,
+        academic_year_start_month=9,
+    )
+    df = generate_synthetic_safeguarding_dataset(sample_cfg)
+    cols = [
+        "period_start",
+        "provision",
+        "safeguarding_category",
+        "concern_count",
+        "enrolled_students",
+        "teaching_days",
+        "attendance_rate",
+        "reporting_change_flag",
+    ]
+    csv_str = df[cols].to_csv(index=False)
+    return PlainTextResponse(
+        content=csv_str,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": 'attachment; filename="south_devon_college_safeguarding_template.csv"'
+        },
+    )
+
+
+@router.get("/historical", response_model=HistoricalStatsResponse)
+def get_historical_statistics(
+    academic_year: str = Query(default="All"),
+    provision: str = Query(default="All"),
+    safeguarding_category: str = Query(default="All"),
+) -> HistoricalStatsResponse:
+    return platform_service.get_historical_stats(
+        academic_year=academic_year,
+        provision=provision,
+        safeguarding_category=safeguarding_category,
+    )
+
+
+@router.post("/forecast", response_model=ForecastResponse)
+def create_forecast(req: ForecastRequest) -> ForecastResponse:
+    try:
+        return platform_service.generate_forecast(req)
+    except KeyError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Forecasting engine error: {exc}") from exc
+
+
+@router.get("/models/availability", response_model=ModelsAvailabilityResponse)
+def get_models_availability() -> ModelsAvailabilityResponse:
+    return platform_service.get_models_availability()
+
+
+@router.get("/models/backtest", response_model=BacktestResponse)
+def get_models_backtest(
+    provision: str = Query(default="All"),
+    safeguarding_category: str = Query(default="All"),
+    horizon: int = Query(default=12, ge=3, le=12),
+) -> BacktestResponse:
+    return platform_service.get_backtest_comparison(
+        provision=provision,
+        safeguarding_category=safeguarding_category,
+        horizon=horizon,
+    )
+
+
+@router.get("/trends", response_model=TrendsInsightsResponse)
+def get_trends_and_insights(
+    provision: str = Query(default="All"),
+    safeguarding_category: str = Query(default="All"),
+) -> TrendsInsightsResponse:
+    return platform_service.get_trends_and_insights(
+        provision=provision,
+        safeguarding_category=safeguarding_category,
+    )
+
+
+@router.get("/models/runs")
+def get_recent_forecast_runs(limit: int = Query(default=20, ge=1, le=100)) -> Dict[str, Any]:
+    return {"runs": platform_service.db.list_forecast_runs(limit=limit)}
+

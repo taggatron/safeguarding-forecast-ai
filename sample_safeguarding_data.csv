@@ -1,0 +1,721 @@
+period_start,provision,safeguarding_category,concern_count,enrolled_students,teaching_days,attendance_rate,reporting_change_flag
+2022-09-01,EPYP,Mental health and wellbeing concerns,38,3322,19,92.0,0
+2022-09-01,EPYP,Abuse or neglect,24,3322,19,92.0,0
+2022-09-01,EPYP,Exploitation,10,3322,19,92.0,0
+2022-09-01,EPYP,Online safety,16,3322,19,92.0,0
+2022-09-01,EPYP,Other recorded concerns,8,3322,19,92.0,0
+2022-09-01,Adult,Mental health and wellbeing concerns,7,2477,19,89.7,0
+2022-09-01,Adult,Abuse or neglect,9,2477,19,89.7,0
+2022-09-01,Adult,Exploitation,0,2477,19,89.7,0
+2022-09-01,Adult,Online safety,7,2477,19,89.7,0
+2022-09-01,Adult,Other recorded concerns,11,2477,19,89.7,0
+2022-09-01,Apprenticeships,Mental health and wellbeing concerns,5,1451,19,94.4,0
+2022-09-01,Apprenticeships,Abuse or neglect,4,1451,19,94.4,0
+2022-09-01,Apprenticeships,Exploitation,1,1451,19,94.4,0
+2022-09-01,Apprenticeships,Online safety,4,1451,19,94.4,0
+2022-09-01,Apprenticeships,Other recorded concerns,2,1451,19,94.4,0
+2022-10-01,EPYP,Mental health and wellbeing concerns,40,3298,18,90.9,0
+2022-10-01,EPYP,Abuse or neglect,25,3298,18,90.9,0
+2022-10-01,EPYP,Exploitation,10,3298,18,90.9,0
+2022-10-01,EPYP,Online safety,10,3298,18,90.9,0
+2022-10-01,EPYP,Other recorded concerns,6,3298,18,90.9,0
+2022-10-01,Adult,Mental health and wellbeing concerns,15,2450,18,87.8,0
+2022-10-01,Adult,Abuse or neglect,6,2450,18,87.8,0
+2022-10-01,Adult,Exploitation,5,2450,18,87.8,0
+2022-10-01,Adult,Online safety,6,2450,18,87.8,0
+2022-10-01,Adult,Other recorded concerns,10,2450,18,87.8,0
+2022-10-01,Apprenticeships,Mental health and wellbeing concerns,3,1437,18,91.8,0
+2022-10-01,Apprenticeships,Abuse or neglect,7,1437,18,91.8,0
+2022-10-01,Apprenticeships,Exploitation,2,1437,18,91.8,0
+2022-10-01,Apprenticeships,Online safety,1,1437,18,91.8,0
+2022-10-01,Apprenticeships,Other recorded concerns,0,1437,18,91.8,0
+2022-11-01,EPYP,Mental health and wellbeing concerns,50,3315,21,90.3,0
+2022-11-01,EPYP,Abuse or neglect,21,3315,21,90.3,0
+2022-11-01,EPYP,Exploitation,10,3315,21,90.3,0
+2022-11-01,EPYP,Online safety,16,3315,21,90.3,0
+2022-11-01,EPYP,Other recorded concerns,11,3315,21,90.3,0
+2022-11-01,Adult,Mental health and wellbeing concerns,13,2382,21,86.8,0
+2022-11-01,Adult,Abuse or neglect,2,2382,21,86.8,0
+2022-11-01,Adult,Exploitation,5,2382,21,86.8,0
+2022-11-01,Adult,Online safety,3,2382,21,86.8,0
+2022-11-01,Adult,Other recorded concerns,5,2382,21,86.8,0
+2022-11-01,Apprenticeships,Mental health and wellbeing concerns,14,1431,21,91.4,0
+2022-11-01,Apprenticeships,Abuse or neglect,4,1431,21,91.4,0
+2022-11-01,Apprenticeships,Exploitation,2,1431,21,91.4,0
+2022-11-01,Apprenticeships,Online safety,3,1431,21,91.4,0
+2022-11-01,Apprenticeships,Other recorded concerns,6,1431,21,91.4,0
+2022-12-01,EPYP,Mental health and wellbeing concerns,43,3293,14,86.7,0
+2022-12-01,EPYP,Abuse or neglect,23,3293,14,86.7,0
+2022-12-01,EPYP,Exploitation,9,3293,14,86.7,0
+2022-12-01,EPYP,Online safety,5,3293,14,86.7,0
+2022-12-01,EPYP,Other recorded concerns,6,3293,14,86.7,0
+2022-12-01,Adult,Mental health and wellbeing concerns,9,2419,14,85.6,0
+2022-12-01,Adult,Abuse or neglect,4,2419,14,85.6,0
+2022-12-01,Adult,Exploitation,2,2419,14,85.6,0
+2022-12-01,Adult,Online safety,4,2419,14,85.6,0
+2022-12-01,Adult,Other recorded concerns,5,2419,14,85.6,0
+2022-12-01,Apprenticeships,Mental health and wellbeing concerns,6,1421,14,89.0,0
+2022-12-01,Apprenticeships,Abuse or neglect,0,1421,14,89.0,0
+2022-12-01,Apprenticeships,Exploitation,2,1421,14,89.0,0
+2022-12-01,Apprenticeships,Online safety,3,1421,14,89.0,0
+2022-12-01,Apprenticeships,Other recorded concerns,1,1421,14,89.0,0
+2023-01-01,EPYP,Mental health and wellbeing concerns,27,3241,19,87.9,0
+2023-01-01,EPYP,Abuse or neglect,33,3241,19,87.9,0
+2023-01-01,EPYP,Exploitation,13,3241,19,87.9,0
+2023-01-01,EPYP,Online safety,23,3241,19,87.9,0
+2023-01-01,EPYP,Other recorded concerns,24,3241,19,87.9,0
+2023-01-01,Adult,Mental health and wellbeing concerns,14,2391,19,86.1,0
+2023-01-01,Adult,Abuse or neglect,17,2391,19,86.1,0
+2023-01-01,Adult,Exploitation,2,2391,19,86.1,0
+2023-01-01,Adult,Online safety,4,2391,19,86.1,0
+2023-01-01,Adult,Other recorded concerns,4,2391,19,86.1,0
+2023-01-01,Apprenticeships,Mental health and wellbeing concerns,6,1410,19,90.3,0
+2023-01-01,Apprenticeships,Abuse or neglect,2,1410,19,90.3,0
+2023-01-01,Apprenticeships,Exploitation,1,1410,19,90.3,0
+2023-01-01,Apprenticeships,Online safety,4,1410,19,90.3,0
+2023-01-01,Apprenticeships,Other recorded concerns,4,1410,19,90.3,0
+2023-02-01,EPYP,Mental health and wellbeing concerns,13,3275,15,86.6,0
+2023-02-01,EPYP,Abuse or neglect,14,3275,15,86.6,0
+2023-02-01,EPYP,Exploitation,6,3275,15,86.6,0
+2023-02-01,EPYP,Online safety,13,3275,15,86.6,0
+2023-02-01,EPYP,Other recorded concerns,11,3275,15,86.6,0
+2023-02-01,Adult,Mental health and wellbeing concerns,11,2393,15,84.9,0
+2023-02-01,Adult,Abuse or neglect,4,2393,15,84.9,0
+2023-02-01,Adult,Exploitation,8,2393,15,84.9,0
+2023-02-01,Adult,Online safety,6,2393,15,84.9,0
+2023-02-01,Adult,Other recorded concerns,8,2393,15,84.9,0
+2023-02-01,Apprenticeships,Mental health and wellbeing concerns,2,1413,15,89.2,0
+2023-02-01,Apprenticeships,Abuse or neglect,4,1413,15,89.2,0
+2023-02-01,Apprenticeships,Exploitation,0,1413,15,89.2,0
+2023-02-01,Apprenticeships,Online safety,1,1413,15,89.2,0
+2023-02-01,Apprenticeships,Other recorded concerns,3,1413,15,89.2,0
+2023-03-01,EPYP,Mental health and wellbeing concerns,52,3261,19,90.5,0
+2023-03-01,EPYP,Abuse or neglect,23,3261,19,90.5,0
+2023-03-01,EPYP,Exploitation,9,3261,19,90.5,0
+2023-03-01,EPYP,Online safety,11,3261,19,90.5,0
+2023-03-01,EPYP,Other recorded concerns,11,3261,19,90.5,0
+2023-03-01,Adult,Mental health and wellbeing concerns,9,2389,19,88.9,0
+2023-03-01,Adult,Abuse or neglect,12,2389,19,88.9,0
+2023-03-01,Adult,Exploitation,1,2389,19,88.9,0
+2023-03-01,Adult,Online safety,3,2389,19,88.9,0
+2023-03-01,Adult,Other recorded concerns,11,2389,19,88.9,0
+2023-03-01,Apprenticeships,Mental health and wellbeing concerns,9,1391,19,92.7,0
+2023-03-01,Apprenticeships,Abuse or neglect,3,1391,19,92.7,0
+2023-03-01,Apprenticeships,Exploitation,1,1391,19,92.7,0
+2023-03-01,Apprenticeships,Online safety,0,1391,19,92.7,0
+2023-03-01,Apprenticeships,Other recorded concerns,2,1391,19,92.7,0
+2023-04-01,EPYP,Mental health and wellbeing concerns,31,3173,14,89.5,0
+2023-04-01,EPYP,Abuse or neglect,15,3173,14,89.5,0
+2023-04-01,EPYP,Exploitation,4,3173,14,89.5,0
+2023-04-01,EPYP,Online safety,4,3173,14,89.5,0
+2023-04-01,EPYP,Other recorded concerns,8,3173,14,89.5,0
+2023-04-01,Adult,Mental health and wellbeing concerns,10,2371,14,85.8,0
+2023-04-01,Adult,Abuse or neglect,1,2371,14,85.8,0
+2023-04-01,Adult,Exploitation,1,2371,14,85.8,0
+2023-04-01,Adult,Online safety,4,2371,14,85.8,0
+2023-04-01,Adult,Other recorded concerns,2,2371,14,85.8,0
+2023-04-01,Apprenticeships,Mental health and wellbeing concerns,6,1395,14,91.5,0
+2023-04-01,Apprenticeships,Abuse or neglect,12,1395,14,91.5,0
+2023-04-01,Apprenticeships,Exploitation,0,1395,14,91.5,0
+2023-04-01,Apprenticeships,Online safety,3,1395,14,91.5,0
+2023-04-01,Apprenticeships,Other recorded concerns,2,1395,14,91.5,0
+2023-05-01,EPYP,Mental health and wellbeing concerns,44,3182,17,89.0,0
+2023-05-01,EPYP,Abuse or neglect,15,3182,17,89.0,0
+2023-05-01,EPYP,Exploitation,2,3182,17,89.0,0
+2023-05-01,EPYP,Online safety,14,3182,17,89.0,0
+2023-05-01,EPYP,Other recorded concerns,8,3182,17,89.0,0
+2023-05-01,Adult,Mental health and wellbeing concerns,27,2312,17,88.3,0
+2023-05-01,Adult,Abuse or neglect,14,2312,17,88.3,0
+2023-05-01,Adult,Exploitation,3,2312,17,88.3,0
+2023-05-01,Adult,Online safety,2,2312,17,88.3,0
+2023-05-01,Adult,Other recorded concerns,11,2312,17,88.3,0
+2023-05-01,Apprenticeships,Mental health and wellbeing concerns,4,1390,17,92.1,0
+2023-05-01,Apprenticeships,Abuse or neglect,5,1390,17,92.1,0
+2023-05-01,Apprenticeships,Exploitation,2,1390,17,92.1,0
+2023-05-01,Apprenticeships,Online safety,2,1390,17,92.1,0
+2023-05-01,Apprenticeships,Other recorded concerns,1,1390,17,92.1,0
+2023-06-01,EPYP,Mental health and wellbeing concerns,20,3128,18,89.0,0
+2023-06-01,EPYP,Abuse or neglect,15,3128,18,89.0,0
+2023-06-01,EPYP,Exploitation,5,3128,18,89.0,0
+2023-06-01,EPYP,Online safety,4,3128,18,89.0,0
+2023-06-01,EPYP,Other recorded concerns,10,3128,18,89.0,0
+2023-06-01,Adult,Mental health and wellbeing concerns,14,2332,18,87.1,0
+2023-06-01,Adult,Abuse or neglect,6,2332,18,87.1,0
+2023-06-01,Adult,Exploitation,5,2332,18,87.1,0
+2023-06-01,Adult,Online safety,3,2332,18,87.1,0
+2023-06-01,Adult,Other recorded concerns,3,2332,18,87.1,0
+2023-06-01,Apprenticeships,Mental health and wellbeing concerns,5,1373,18,91.7,0
+2023-06-01,Apprenticeships,Abuse or neglect,7,1373,18,91.7,0
+2023-06-01,Apprenticeships,Exploitation,0,1373,18,91.7,0
+2023-06-01,Apprenticeships,Online safety,2,1373,18,91.7,0
+2023-06-01,Apprenticeships,Other recorded concerns,3,1373,18,91.7,0
+2023-07-01,EPYP,Mental health and wellbeing concerns,9,3090,6,88.6,0
+2023-07-01,EPYP,Abuse or neglect,4,3090,6,88.6,0
+2023-07-01,EPYP,Exploitation,1,3090,6,88.6,0
+2023-07-01,EPYP,Online safety,3,3090,6,88.6,0
+2023-07-01,EPYP,Other recorded concerns,1,3090,6,88.6,0
+2023-07-01,Adult,Mental health and wellbeing concerns,8,2339,6,87.8,0
+2023-07-01,Adult,Abuse or neglect,3,2339,6,87.8,0
+2023-07-01,Adult,Exploitation,0,2339,6,87.8,0
+2023-07-01,Adult,Online safety,1,2339,6,87.8,0
+2023-07-01,Adult,Other recorded concerns,0,2339,6,87.8,0
+2023-07-01,Apprenticeships,Mental health and wellbeing concerns,2,1340,6,90.3,0
+2023-07-01,Apprenticeships,Abuse or neglect,6,1340,6,90.3,0
+2023-07-01,Apprenticeships,Exploitation,2,1340,6,90.3,0
+2023-07-01,Apprenticeships,Online safety,2,1340,6,90.3,0
+2023-07-01,Apprenticeships,Other recorded concerns,0,1340,6,90.3,0
+2023-08-01,EPYP,Mental health and wellbeing concerns,9,3091,2,89.7,0
+2023-08-01,EPYP,Abuse or neglect,4,3091,2,89.7,0
+2023-08-01,EPYP,Exploitation,0,3091,2,89.7,0
+2023-08-01,EPYP,Online safety,0,3091,2,89.7,0
+2023-08-01,EPYP,Other recorded concerns,2,3091,2,89.7,0
+2023-08-01,Adult,Mental health and wellbeing concerns,3,2283,2,88.5,0
+2023-08-01,Adult,Abuse or neglect,2,2283,2,88.5,0
+2023-08-01,Adult,Exploitation,1,2283,2,88.5,0
+2023-08-01,Adult,Online safety,1,2283,2,88.5,0
+2023-08-01,Adult,Other recorded concerns,1,2283,2,88.5,0
+2023-08-01,Apprenticeships,Mental health and wellbeing concerns,8,1368,2,91.9,0
+2023-08-01,Apprenticeships,Abuse or neglect,3,1368,2,91.9,0
+2023-08-01,Apprenticeships,Exploitation,4,1368,2,91.9,0
+2023-08-01,Apprenticeships,Online safety,0,1368,2,91.9,0
+2023-08-01,Apprenticeships,Other recorded concerns,1,1368,2,91.9,0
+2023-09-01,EPYP,Mental health and wellbeing concerns,37,3366,19,88.1,0
+2023-09-01,EPYP,Abuse or neglect,18,3366,19,88.1,0
+2023-09-01,EPYP,Exploitation,9,3366,19,88.1,0
+2023-09-01,EPYP,Online safety,10,3366,19,88.1,0
+2023-09-01,EPYP,Other recorded concerns,9,3366,19,88.1,0
+2023-09-01,Adult,Mental health and wellbeing concerns,5,2517,19,88.0,0
+2023-09-01,Adult,Abuse or neglect,8,2517,19,88.0,0
+2023-09-01,Adult,Exploitation,4,2517,19,88.0,0
+2023-09-01,Adult,Online safety,5,2517,19,88.0,0
+2023-09-01,Adult,Other recorded concerns,6,2517,19,88.0,0
+2023-09-01,Apprenticeships,Mental health and wellbeing concerns,2,1468,19,92.3,0
+2023-09-01,Apprenticeships,Abuse or neglect,1,1468,19,92.3,0
+2023-09-01,Apprenticeships,Exploitation,1,1468,19,92.3,0
+2023-09-01,Apprenticeships,Online safety,1,1468,19,92.3,0
+2023-09-01,Apprenticeships,Other recorded concerns,2,1468,19,92.3,0
+2023-10-01,EPYP,Mental health and wellbeing concerns,28,3356,17,89.5,0
+2023-10-01,EPYP,Abuse or neglect,19,3356,17,89.5,0
+2023-10-01,EPYP,Exploitation,6,3356,17,89.5,0
+2023-10-01,EPYP,Online safety,17,3356,17,89.5,0
+2023-10-01,EPYP,Other recorded concerns,25,3356,17,89.5,0
+2023-10-01,Adult,Mental health and wellbeing concerns,14,2503,17,88.4,0
+2023-10-01,Adult,Abuse or neglect,5,2503,17,88.4,0
+2023-10-01,Adult,Exploitation,9,2503,17,88.4,0
+2023-10-01,Adult,Online safety,10,2503,17,88.4,0
+2023-10-01,Adult,Other recorded concerns,13,2503,17,88.4,0
+2023-10-01,Apprenticeships,Mental health and wellbeing concerns,11,1467,17,93.1,0
+2023-10-01,Apprenticeships,Abuse or neglect,4,1467,17,93.1,0
+2023-10-01,Apprenticeships,Exploitation,1,1467,17,93.1,0
+2023-10-01,Apprenticeships,Online safety,4,1467,17,93.1,0
+2023-10-01,Apprenticeships,Other recorded concerns,1,1467,17,93.1,0
+2023-11-01,EPYP,Mental health and wellbeing concerns,64,3326,21,90.4,0
+2023-11-01,EPYP,Abuse or neglect,29,3326,21,90.4,0
+2023-11-01,EPYP,Exploitation,16,3326,21,90.4,0
+2023-11-01,EPYP,Online safety,18,3326,21,90.4,0
+2023-11-01,EPYP,Other recorded concerns,17,3326,21,90.4,0
+2023-11-01,Adult,Mental health and wellbeing concerns,33,2509,21,88.0,0
+2023-11-01,Adult,Abuse or neglect,10,2509,21,88.0,0
+2023-11-01,Adult,Exploitation,7,2509,21,88.0,0
+2023-11-01,Adult,Online safety,4,2509,21,88.0,0
+2023-11-01,Adult,Other recorded concerns,13,2509,21,88.0,0
+2023-11-01,Apprenticeships,Mental health and wellbeing concerns,9,1427,21,91.7,0
+2023-11-01,Apprenticeships,Abuse or neglect,5,1427,21,91.7,0
+2023-11-01,Apprenticeships,Exploitation,2,1427,21,91.7,0
+2023-11-01,Apprenticeships,Online safety,2,1427,21,91.7,0
+2023-11-01,Apprenticeships,Other recorded concerns,3,1427,21,91.7,0
+2023-12-01,EPYP,Mental health and wellbeing concerns,24,3329,14,87.1,0
+2023-12-01,EPYP,Abuse or neglect,10,3329,14,87.1,0
+2023-12-01,EPYP,Exploitation,5,3329,14,87.1,0
+2023-12-01,EPYP,Online safety,11,3329,14,87.1,0
+2023-12-01,EPYP,Other recorded concerns,9,3329,14,87.1,0
+2023-12-01,Adult,Mental health and wellbeing concerns,6,2460,14,85.6,0
+2023-12-01,Adult,Abuse or neglect,5,2460,14,85.6,0
+2023-12-01,Adult,Exploitation,0,2460,14,85.6,0
+2023-12-01,Adult,Online safety,4,2460,14,85.6,0
+2023-12-01,Adult,Other recorded concerns,9,2460,14,85.6,0
+2023-12-01,Apprenticeships,Mental health and wellbeing concerns,8,1456,14,89.7,0
+2023-12-01,Apprenticeships,Abuse or neglect,2,1456,14,89.7,0
+2023-12-01,Apprenticeships,Exploitation,3,1456,14,89.7,0
+2023-12-01,Apprenticeships,Online safety,4,1456,14,89.7,0
+2023-12-01,Apprenticeships,Other recorded concerns,1,1456,14,89.7,0
+2024-01-01,EPYP,Mental health and wellbeing concerns,58,3327,19,87.3,0
+2024-01-01,EPYP,Abuse or neglect,51,3327,19,87.3,0
+2024-01-01,EPYP,Exploitation,10,3327,19,87.3,0
+2024-01-01,EPYP,Online safety,20,3327,19,87.3,0
+2024-01-01,EPYP,Other recorded concerns,12,3327,19,87.3,0
+2024-01-01,Adult,Mental health and wellbeing concerns,10,2462,19,85.8,0
+2024-01-01,Adult,Abuse or neglect,6,2462,19,85.8,0
+2024-01-01,Adult,Exploitation,6,2462,19,85.8,0
+2024-01-01,Adult,Online safety,10,2462,19,85.8,0
+2024-01-01,Adult,Other recorded concerns,5,2462,19,85.8,0
+2024-01-01,Apprenticeships,Mental health and wellbeing concerns,13,1442,19,87.2,0
+2024-01-01,Apprenticeships,Abuse or neglect,4,1442,19,87.2,0
+2024-01-01,Apprenticeships,Exploitation,8,1442,19,87.2,0
+2024-01-01,Apprenticeships,Online safety,4,1442,19,87.2,0
+2024-01-01,Apprenticeships,Other recorded concerns,7,1442,19,87.2,0
+2024-02-01,EPYP,Mental health and wellbeing concerns,53,3269,14,87.8,0
+2024-02-01,EPYP,Abuse or neglect,11,3269,14,87.8,0
+2024-02-01,EPYP,Exploitation,8,3269,14,87.8,0
+2024-02-01,EPYP,Online safety,13,3269,14,87.8,0
+2024-02-01,EPYP,Other recorded concerns,11,3269,14,87.8,0
+2024-02-01,Adult,Mental health and wellbeing concerns,16,2448,14,86.5,0
+2024-02-01,Adult,Abuse or neglect,5,2448,14,86.5,0
+2024-02-01,Adult,Exploitation,5,2448,14,86.5,0
+2024-02-01,Adult,Online safety,5,2448,14,86.5,0
+2024-02-01,Adult,Other recorded concerns,9,2448,14,86.5,0
+2024-02-01,Apprenticeships,Mental health and wellbeing concerns,7,1454,14,88.9,0
+2024-02-01,Apprenticeships,Abuse or neglect,5,1454,14,88.9,0
+2024-02-01,Apprenticeships,Exploitation,1,1454,14,88.9,0
+2024-02-01,Apprenticeships,Online safety,2,1454,14,88.9,0
+2024-02-01,Apprenticeships,Other recorded concerns,5,1454,14,88.9,0
+2024-03-01,EPYP,Mental health and wellbeing concerns,34,3292,19,89.9,0
+2024-03-01,EPYP,Abuse or neglect,11,3292,19,89.9,0
+2024-03-01,EPYP,Exploitation,6,3292,19,89.9,0
+2024-03-01,EPYP,Online safety,9,3292,19,89.9,0
+2024-03-01,EPYP,Other recorded concerns,21,3292,19,89.9,0
+2024-03-01,Adult,Mental health and wellbeing concerns,24,2414,19,87.3,0
+2024-03-01,Adult,Abuse or neglect,5,2414,19,87.3,0
+2024-03-01,Adult,Exploitation,2,2414,19,87.3,0
+2024-03-01,Adult,Online safety,1,2414,19,87.3,0
+2024-03-01,Adult,Other recorded concerns,2,2414,19,87.3,0
+2024-03-01,Apprenticeships,Mental health and wellbeing concerns,2,1442,19,91.7,0
+2024-03-01,Apprenticeships,Abuse or neglect,6,1442,19,91.7,0
+2024-03-01,Apprenticeships,Exploitation,2,1442,19,91.7,0
+2024-03-01,Apprenticeships,Online safety,5,1442,19,91.7,0
+2024-03-01,Apprenticeships,Other recorded concerns,6,1442,19,91.7,0
+2024-04-01,EPYP,Mental health and wellbeing concerns,23,3287,13,90.7,0
+2024-04-01,EPYP,Abuse or neglect,15,3287,13,90.7,0
+2024-04-01,EPYP,Exploitation,1,3287,13,90.7,0
+2024-04-01,EPYP,Online safety,13,3287,13,90.7,0
+2024-04-01,EPYP,Other recorded concerns,6,3287,13,90.7,0
+2024-04-01,Adult,Mental health and wellbeing concerns,8,2412,13,87.5,0
+2024-04-01,Adult,Abuse or neglect,5,2412,13,87.5,0
+2024-04-01,Adult,Exploitation,1,2412,13,87.5,0
+2024-04-01,Adult,Online safety,5,2412,13,87.5,0
+2024-04-01,Adult,Other recorded concerns,8,2412,13,87.5,0
+2024-04-01,Apprenticeships,Mental health and wellbeing concerns,10,1428,13,91.6,0
+2024-04-01,Apprenticeships,Abuse or neglect,8,1428,13,91.6,0
+2024-04-01,Apprenticeships,Exploitation,0,1428,13,91.6,0
+2024-04-01,Apprenticeships,Online safety,0,1428,13,91.6,0
+2024-04-01,Apprenticeships,Other recorded concerns,3,1428,13,91.6,0
+2024-05-01,EPYP,Mental health and wellbeing concerns,47,3240,17,88.0,0
+2024-05-01,EPYP,Abuse or neglect,9,3240,17,88.0,0
+2024-05-01,EPYP,Exploitation,5,3240,17,88.0,0
+2024-05-01,EPYP,Online safety,6,3240,17,88.0,0
+2024-05-01,EPYP,Other recorded concerns,9,3240,17,88.0,0
+2024-05-01,Adult,Mental health and wellbeing concerns,11,2404,17,87.6,0
+2024-05-01,Adult,Abuse or neglect,7,2404,17,87.6,0
+2024-05-01,Adult,Exploitation,1,2404,17,87.6,0
+2024-05-01,Adult,Online safety,5,2404,17,87.6,0
+2024-05-01,Adult,Other recorded concerns,3,2404,17,87.6,0
+2024-05-01,Apprenticeships,Mental health and wellbeing concerns,6,1428,17,91.9,0
+2024-05-01,Apprenticeships,Abuse or neglect,7,1428,17,91.9,0
+2024-05-01,Apprenticeships,Exploitation,1,1428,17,91.9,0
+2024-05-01,Apprenticeships,Online safety,5,1428,17,91.9,0
+2024-05-01,Apprenticeships,Other recorded concerns,2,1428,17,91.9,0
+2024-06-01,EPYP,Mental health and wellbeing concerns,31,3214,18,89.3,0
+2024-06-01,EPYP,Abuse or neglect,11,3214,18,89.3,0
+2024-06-01,EPYP,Exploitation,4,3214,18,89.3,0
+2024-06-01,EPYP,Online safety,9,3214,18,89.3,0
+2024-06-01,EPYP,Other recorded concerns,20,3214,18,89.3,0
+2024-06-01,Adult,Mental health and wellbeing concerns,9,2373,18,87.1,0
+2024-06-01,Adult,Abuse or neglect,10,2373,18,87.1,0
+2024-06-01,Adult,Exploitation,3,2373,18,87.1,0
+2024-06-01,Adult,Online safety,4,2373,18,87.1,0
+2024-06-01,Adult,Other recorded concerns,6,2373,18,87.1,0
+2024-06-01,Apprenticeships,Mental health and wellbeing concerns,3,1387,18,90.4,0
+2024-06-01,Apprenticeships,Abuse or neglect,1,1387,18,90.4,0
+2024-06-01,Apprenticeships,Exploitation,2,1387,18,90.4,0
+2024-06-01,Apprenticeships,Online safety,1,1387,18,90.4,0
+2024-06-01,Apprenticeships,Other recorded concerns,1,1387,18,90.4,0
+2024-07-01,EPYP,Mental health and wellbeing concerns,8,3154,6,88.9,0
+2024-07-01,EPYP,Abuse or neglect,1,3154,6,88.9,0
+2024-07-01,EPYP,Exploitation,3,3154,6,88.9,0
+2024-07-01,EPYP,Online safety,3,3154,6,88.9,0
+2024-07-01,EPYP,Other recorded concerns,6,3154,6,88.9,0
+2024-07-01,Adult,Mental health and wellbeing concerns,4,2346,6,86.8,0
+2024-07-01,Adult,Abuse or neglect,4,2346,6,86.8,0
+2024-07-01,Adult,Exploitation,0,2346,6,86.8,0
+2024-07-01,Adult,Online safety,2,2346,6,86.8,0
+2024-07-01,Adult,Other recorded concerns,2,2346,6,86.8,0
+2024-07-01,Apprenticeships,Mental health and wellbeing concerns,5,1393,6,92.5,0
+2024-07-01,Apprenticeships,Abuse or neglect,2,1393,6,92.5,0
+2024-07-01,Apprenticeships,Exploitation,1,1393,6,92.5,0
+2024-07-01,Apprenticeships,Online safety,3,1393,6,92.5,0
+2024-07-01,Apprenticeships,Other recorded concerns,1,1393,6,92.5,0
+2024-08-01,EPYP,Mental health and wellbeing concerns,9,3204,2,88.7,0
+2024-08-01,EPYP,Abuse or neglect,7,3204,2,88.7,0
+2024-08-01,EPYP,Exploitation,2,3204,2,88.7,0
+2024-08-01,EPYP,Online safety,2,3204,2,88.7,0
+2024-08-01,EPYP,Other recorded concerns,2,3204,2,88.7,0
+2024-08-01,Adult,Mental health and wellbeing concerns,1,2331,2,88.8,0
+2024-08-01,Adult,Abuse or neglect,2,2331,2,88.8,0
+2024-08-01,Adult,Exploitation,2,2331,2,88.8,0
+2024-08-01,Adult,Online safety,0,2331,2,88.8,0
+2024-08-01,Adult,Other recorded concerns,3,2331,2,88.8,0
+2024-08-01,Apprenticeships,Mental health and wellbeing concerns,6,1369,2,91.3,0
+2024-08-01,Apprenticeships,Abuse or neglect,2,1369,2,91.3,0
+2024-08-01,Apprenticeships,Exploitation,0,1369,2,91.3,0
+2024-08-01,Apprenticeships,Online safety,0,1369,2,91.3,0
+2024-08-01,Apprenticeships,Other recorded concerns,4,1369,2,91.3,0
+2024-09-01,EPYP,Mental health and wellbeing concerns,43,3457,19,90.4,0
+2024-09-01,EPYP,Abuse or neglect,25,3457,19,90.4,0
+2024-09-01,EPYP,Exploitation,5,3457,19,90.4,0
+2024-09-01,EPYP,Online safety,14,3457,19,90.4,0
+2024-09-01,EPYP,Other recorded concerns,21,3457,19,90.4,0
+2024-09-01,Adult,Mental health and wellbeing concerns,27,2581,19,87.8,0
+2024-09-01,Adult,Abuse or neglect,5,2581,19,87.8,0
+2024-09-01,Adult,Exploitation,1,2581,19,87.8,0
+2024-09-01,Adult,Online safety,4,2581,19,87.8,0
+2024-09-01,Adult,Other recorded concerns,3,2581,19,87.8,0
+2024-09-01,Apprenticeships,Mental health and wellbeing concerns,3,1484,19,92.8,0
+2024-09-01,Apprenticeships,Abuse or neglect,5,1484,19,92.8,0
+2024-09-01,Apprenticeships,Exploitation,3,1484,19,92.8,0
+2024-09-01,Apprenticeships,Online safety,2,1484,19,92.8,0
+2024-09-01,Apprenticeships,Other recorded concerns,2,1484,19,92.8,0
+2024-10-01,EPYP,Mental health and wellbeing concerns,64,3475,19,90.9,0
+2024-10-01,EPYP,Abuse or neglect,19,3475,19,90.9,0
+2024-10-01,EPYP,Exploitation,8,3475,19,90.9,0
+2024-10-01,EPYP,Online safety,14,3475,19,90.9,0
+2024-10-01,EPYP,Other recorded concerns,15,3475,19,90.9,0
+2024-10-01,Adult,Mental health and wellbeing concerns,28,2559,19,86.8,0
+2024-10-01,Adult,Abuse or neglect,17,2559,19,86.8,0
+2024-10-01,Adult,Exploitation,4,2559,19,86.8,0
+2024-10-01,Adult,Online safety,4,2559,19,86.8,0
+2024-10-01,Adult,Other recorded concerns,9,2559,19,86.8,0
+2024-10-01,Apprenticeships,Mental health and wellbeing concerns,2,1483,19,92.4,0
+2024-10-01,Apprenticeships,Abuse or neglect,4,1483,19,92.4,0
+2024-10-01,Apprenticeships,Exploitation,2,1483,19,92.4,0
+2024-10-01,Apprenticeships,Online safety,2,1483,19,92.4,0
+2024-10-01,Apprenticeships,Other recorded concerns,2,1483,19,92.4,0
+2024-11-01,EPYP,Mental health and wellbeing concerns,25,3380,21,88.6,0
+2024-11-01,EPYP,Abuse or neglect,20,3380,21,88.6,0
+2024-11-01,EPYP,Exploitation,21,3380,21,88.6,0
+2024-11-01,EPYP,Online safety,19,3380,21,88.6,0
+2024-11-01,EPYP,Other recorded concerns,24,3380,21,88.6,0
+2024-11-01,Adult,Mental health and wellbeing concerns,22,2500,21,87.6,0
+2024-11-01,Adult,Abuse or neglect,7,2500,21,87.6,0
+2024-11-01,Adult,Exploitation,2,2500,21,87.6,0
+2024-11-01,Adult,Online safety,6,2500,21,87.6,0
+2024-11-01,Adult,Other recorded concerns,6,2500,21,87.6,0
+2024-11-01,Apprenticeships,Mental health and wellbeing concerns,8,1488,21,91.8,0
+2024-11-01,Apprenticeships,Abuse or neglect,3,1488,21,91.8,0
+2024-11-01,Apprenticeships,Exploitation,1,1488,21,91.8,0
+2024-11-01,Apprenticeships,Online safety,6,1488,21,91.8,0
+2024-11-01,Apprenticeships,Other recorded concerns,3,1488,21,91.8,0
+2024-12-01,EPYP,Mental health and wellbeing concerns,18,3334,14,88.3,0
+2024-12-01,EPYP,Abuse or neglect,25,3334,14,88.3,0
+2024-12-01,EPYP,Exploitation,6,3334,14,88.3,0
+2024-12-01,EPYP,Online safety,11,3334,14,88.3,0
+2024-12-01,EPYP,Other recorded concerns,10,3334,14,88.3,0
+2024-12-01,Adult,Mental health and wellbeing concerns,18,2490,14,83.5,0
+2024-12-01,Adult,Abuse or neglect,4,2490,14,83.5,0
+2024-12-01,Adult,Exploitation,0,2490,14,83.5,0
+2024-12-01,Adult,Online safety,6,2490,14,83.5,0
+2024-12-01,Adult,Other recorded concerns,1,2490,14,83.5,0
+2024-12-01,Apprenticeships,Mental health and wellbeing concerns,13,1495,14,90.5,0
+2024-12-01,Apprenticeships,Abuse or neglect,1,1495,14,90.5,0
+2024-12-01,Apprenticeships,Exploitation,0,1495,14,90.5,0
+2024-12-01,Apprenticeships,Online safety,2,1495,14,90.5,0
+2024-12-01,Apprenticeships,Other recorded concerns,4,1495,14,90.5,0
+2025-01-01,EPYP,Mental health and wellbeing concerns,87,3383,19,86.3,0
+2025-01-01,EPYP,Abuse or neglect,17,3383,19,86.3,0
+2025-01-01,EPYP,Exploitation,19,3383,19,86.3,0
+2025-01-01,EPYP,Online safety,22,3383,19,86.3,0
+2025-01-01,EPYP,Other recorded concerns,10,3383,19,86.3,0
+2025-01-01,Adult,Mental health and wellbeing concerns,11,2513,19,84.9,0
+2025-01-01,Adult,Abuse or neglect,3,2513,19,84.9,0
+2025-01-01,Adult,Exploitation,3,2513,19,84.9,0
+2025-01-01,Adult,Online safety,8,2513,19,84.9,0
+2025-01-01,Adult,Other recorded concerns,4,2513,19,84.9,0
+2025-01-01,Apprenticeships,Mental health and wellbeing concerns,22,1465,19,89.2,0
+2025-01-01,Apprenticeships,Abuse or neglect,5,1465,19,89.2,0
+2025-01-01,Apprenticeships,Exploitation,1,1465,19,89.2,0
+2025-01-01,Apprenticeships,Online safety,2,1465,19,89.2,0
+2025-01-01,Apprenticeships,Other recorded concerns,3,1465,19,89.2,0
+2025-02-01,EPYP,Mental health and wellbeing concerns,42,3407,15,87.3,0
+2025-02-01,EPYP,Abuse or neglect,7,3407,15,87.3,0
+2025-02-01,EPYP,Exploitation,2,3407,15,87.3,0
+2025-02-01,EPYP,Online safety,11,3407,15,87.3,0
+2025-02-01,EPYP,Other recorded concerns,5,3407,15,87.3,0
+2025-02-01,Adult,Mental health and wellbeing concerns,19,2476,15,85.6,0
+2025-02-01,Adult,Abuse or neglect,3,2476,15,85.6,0
+2025-02-01,Adult,Exploitation,2,2476,15,85.6,0
+2025-02-01,Adult,Online safety,4,2476,15,85.6,0
+2025-02-01,Adult,Other recorded concerns,7,2476,15,85.6,0
+2025-02-01,Apprenticeships,Mental health and wellbeing concerns,10,1432,15,89.0,0
+2025-02-01,Apprenticeships,Abuse or neglect,4,1432,15,89.0,0
+2025-02-01,Apprenticeships,Exploitation,2,1432,15,89.0,0
+2025-02-01,Apprenticeships,Online safety,1,1432,15,89.0,0
+2025-02-01,Apprenticeships,Other recorded concerns,3,1432,15,89.0,0
+2025-03-01,EPYP,Mental health and wellbeing concerns,29,3346,21,88.5,0
+2025-03-01,EPYP,Abuse or neglect,22,3346,21,88.5,0
+2025-03-01,EPYP,Exploitation,12,3346,21,88.5,0
+2025-03-01,EPYP,Online safety,15,3346,21,88.5,0
+2025-03-01,EPYP,Other recorded concerns,5,3346,21,88.5,0
+2025-03-01,Adult,Mental health and wellbeing concerns,30,2465,21,86.0,0
+2025-03-01,Adult,Abuse or neglect,3,2465,21,86.0,0
+2025-03-01,Adult,Exploitation,3,2465,21,86.0,0
+2025-03-01,Adult,Online safety,7,2465,21,86.0,0
+2025-03-01,Adult,Other recorded concerns,10,2465,21,86.0,0
+2025-03-01,Apprenticeships,Mental health and wellbeing concerns,9,1460,21,92.6,0
+2025-03-01,Apprenticeships,Abuse or neglect,8,1460,21,92.6,0
+2025-03-01,Apprenticeships,Exploitation,4,1460,21,92.6,0
+2025-03-01,Apprenticeships,Online safety,2,1460,21,92.6,0
+2025-03-01,Apprenticeships,Other recorded concerns,3,1460,21,92.6,0
+2025-04-01,EPYP,Mental health and wellbeing concerns,35,3314,13,90.0,0
+2025-04-01,EPYP,Abuse or neglect,11,3314,13,90.0,0
+2025-04-01,EPYP,Exploitation,10,3314,13,90.0,0
+2025-04-01,EPYP,Online safety,14,3314,13,90.0,0
+2025-04-01,EPYP,Other recorded concerns,9,3314,13,90.0,0
+2025-04-01,Adult,Mental health and wellbeing concerns,13,2469,13,88.3,0
+2025-04-01,Adult,Abuse or neglect,3,2469,13,88.3,0
+2025-04-01,Adult,Exploitation,2,2469,13,88.3,0
+2025-04-01,Adult,Online safety,1,2469,13,88.3,0
+2025-04-01,Adult,Other recorded concerns,2,2469,13,88.3,0
+2025-04-01,Apprenticeships,Mental health and wellbeing concerns,2,1435,13,90.6,0
+2025-04-01,Apprenticeships,Abuse or neglect,4,1435,13,90.6,0
+2025-04-01,Apprenticeships,Exploitation,1,1435,13,90.6,0
+2025-04-01,Apprenticeships,Online safety,3,1435,13,90.6,0
+2025-04-01,Apprenticeships,Other recorded concerns,1,1435,13,90.6,0
+2025-05-01,EPYP,Mental health and wellbeing concerns,64,3341,17,90.3,0
+2025-05-01,EPYP,Abuse or neglect,17,3341,17,90.3,0
+2025-05-01,EPYP,Exploitation,8,3341,17,90.3,0
+2025-05-01,EPYP,Online safety,12,3341,17,90.3,0
+2025-05-01,EPYP,Other recorded concerns,26,3341,17,90.3,0
+2025-05-01,Adult,Mental health and wellbeing concerns,19,2460,17,86.2,0
+2025-05-01,Adult,Abuse or neglect,7,2460,17,86.2,0
+2025-05-01,Adult,Exploitation,6,2460,17,86.2,0
+2025-05-01,Adult,Online safety,6,2460,17,86.2,0
+2025-05-01,Adult,Other recorded concerns,5,2460,17,86.2,0
+2025-05-01,Apprenticeships,Mental health and wellbeing concerns,6,1448,17,92.2,0
+2025-05-01,Apprenticeships,Abuse or neglect,1,1448,17,92.2,0
+2025-05-01,Apprenticeships,Exploitation,0,1448,17,92.2,0
+2025-05-01,Apprenticeships,Online safety,2,1448,17,92.2,0
+2025-05-01,Apprenticeships,Other recorded concerns,9,1448,17,92.2,0
+2025-06-01,EPYP,Mental health and wellbeing concerns,18,3308,18,87.1,0
+2025-06-01,EPYP,Abuse or neglect,10,3308,18,87.1,0
+2025-06-01,EPYP,Exploitation,3,3308,18,87.1,0
+2025-06-01,EPYP,Online safety,5,3308,18,87.1,0
+2025-06-01,EPYP,Other recorded concerns,12,3308,18,87.1,0
+2025-06-01,Adult,Mental health and wellbeing concerns,10,2395,18,89.0,0
+2025-06-01,Adult,Abuse or neglect,7,2395,18,89.0,0
+2025-06-01,Adult,Exploitation,3,2395,18,89.0,0
+2025-06-01,Adult,Online safety,2,2395,18,89.0,0
+2025-06-01,Adult,Other recorded concerns,1,2395,18,89.0,0
+2025-06-01,Apprenticeships,Mental health and wellbeing concerns,5,1433,18,90.4,0
+2025-06-01,Apprenticeships,Abuse or neglect,2,1433,18,90.4,0
+2025-06-01,Apprenticeships,Exploitation,0,1433,18,90.4,0
+2025-06-01,Apprenticeships,Online safety,0,1433,18,90.4,0
+2025-06-01,Apprenticeships,Other recorded concerns,4,1433,18,90.4,0
+2025-07-01,EPYP,Mental health and wellbeing concerns,23,3213,6,88.4,0
+2025-07-01,EPYP,Abuse or neglect,3,3213,6,88.4,0
+2025-07-01,EPYP,Exploitation,0,3213,6,88.4,0
+2025-07-01,EPYP,Online safety,6,3213,6,88.4,0
+2025-07-01,EPYP,Other recorded concerns,3,3213,6,88.4,0
+2025-07-01,Adult,Mental health and wellbeing concerns,2,2401,6,87.4,0
+2025-07-01,Adult,Abuse or neglect,1,2401,6,87.4,0
+2025-07-01,Adult,Exploitation,2,2401,6,87.4,0
+2025-07-01,Adult,Online safety,0,2401,6,87.4,0
+2025-07-01,Adult,Other recorded concerns,2,2401,6,87.4,0
+2025-07-01,Apprenticeships,Mental health and wellbeing concerns,4,1406,6,89.3,0
+2025-07-01,Apprenticeships,Abuse or neglect,0,1406,6,89.3,0
+2025-07-01,Apprenticeships,Exploitation,1,1406,6,89.3,0
+2025-07-01,Apprenticeships,Online safety,0,1406,6,89.3,0
+2025-07-01,Apprenticeships,Other recorded concerns,2,1406,6,89.3,0
+2025-08-01,EPYP,Mental health and wellbeing concerns,10,3235,2,88.1,0
+2025-08-01,EPYP,Abuse or neglect,3,3235,2,88.1,0
+2025-08-01,EPYP,Exploitation,0,3235,2,88.1,0
+2025-08-01,EPYP,Online safety,4,3235,2,88.1,0
+2025-08-01,EPYP,Other recorded concerns,1,3235,2,88.1,0
+2025-08-01,Adult,Mental health and wellbeing concerns,2,2393,2,87.8,0
+2025-08-01,Adult,Abuse or neglect,2,2393,2,87.8,0
+2025-08-01,Adult,Exploitation,2,2393,2,87.8,0
+2025-08-01,Adult,Online safety,1,2393,2,87.8,0
+2025-08-01,Adult,Other recorded concerns,1,2393,2,87.8,0
+2025-08-01,Apprenticeships,Mental health and wellbeing concerns,2,1411,2,90.2,0
+2025-08-01,Apprenticeships,Abuse or neglect,1,1411,2,90.2,0
+2025-08-01,Apprenticeships,Exploitation,2,1411,2,90.2,0
+2025-08-01,Apprenticeships,Online safety,3,1411,2,90.2,0
+2025-08-01,Apprenticeships,Other recorded concerns,2,1411,2,90.2,0
+2025-09-01,EPYP,Mental health and wellbeing concerns,51,3514,19,91.1,1
+2025-09-01,EPYP,Abuse or neglect,16,3514,19,91.1,1
+2025-09-01,EPYP,Exploitation,10,3514,19,91.1,1
+2025-09-01,EPYP,Online safety,4,3514,19,91.1,1
+2025-09-01,EPYP,Other recorded concerns,11,3514,19,91.1,1
+2025-09-01,Adult,Mental health and wellbeing concerns,3,2554,19,89.0,1
+2025-09-01,Adult,Abuse or neglect,13,2554,19,89.0,1
+2025-09-01,Adult,Exploitation,2,2554,19,89.0,1
+2025-09-01,Adult,Online safety,11,2554,19,89.0,1
+2025-09-01,Adult,Other recorded concerns,6,2554,19,89.0,1
+2025-09-01,Apprenticeships,Mental health and wellbeing concerns,8,1517,19,92.5,1
+2025-09-01,Apprenticeships,Abuse or neglect,2,1517,19,92.5,1
+2025-09-01,Apprenticeships,Exploitation,1,1517,19,92.5,1
+2025-09-01,Apprenticeships,Online safety,0,1517,19,92.5,1
+2025-09-01,Apprenticeships,Other recorded concerns,3,1517,19,92.5,1
+2025-10-01,EPYP,Mental health and wellbeing concerns,30,3504,19,90.7,1
+2025-10-01,EPYP,Abuse or neglect,18,3504,19,90.7,1
+2025-10-01,EPYP,Exploitation,13,3504,19,90.7,1
+2025-10-01,EPYP,Online safety,17,3504,19,90.7,1
+2025-10-01,EPYP,Other recorded concerns,22,3504,19,90.7,1
+2025-10-01,Adult,Mental health and wellbeing concerns,11,2540,19,88.5,1
+2025-10-01,Adult,Abuse or neglect,10,2540,19,88.5,1
+2025-10-01,Adult,Exploitation,2,2540,19,88.5,1
+2025-10-01,Adult,Online safety,8,2540,19,88.5,1
+2025-10-01,Adult,Other recorded concerns,10,2540,19,88.5,1
+2025-10-01,Apprenticeships,Mental health and wellbeing concerns,10,1517,19,92.6,1
+2025-10-01,Apprenticeships,Abuse or neglect,3,1517,19,92.6,1
+2025-10-01,Apprenticeships,Exploitation,0,1517,19,92.6,1
+2025-10-01,Apprenticeships,Online safety,2,1517,19,92.6,1
+2025-10-01,Apprenticeships,Other recorded concerns,8,1517,19,92.6,1
+2025-11-01,EPYP,Mental health and wellbeing concerns,75,3449,21,90.5,1
+2025-11-01,EPYP,Abuse or neglect,12,3449,21,90.5,1
+2025-11-01,EPYP,Exploitation,15,3449,21,90.5,1
+2025-11-01,EPYP,Online safety,13,3449,21,90.5,1
+2025-11-01,EPYP,Other recorded concerns,20,3449,21,90.5,1
+2025-11-01,Adult,Mental health and wellbeing concerns,12,2580,21,88.1,1
+2025-11-01,Adult,Abuse or neglect,13,2580,21,88.1,1
+2025-11-01,Adult,Exploitation,8,2580,21,88.1,1
+2025-11-01,Adult,Online safety,3,2580,21,88.1,1
+2025-11-01,Adult,Other recorded concerns,10,2580,21,88.1,1
+2025-11-01,Apprenticeships,Mental health and wellbeing concerns,12,1494,21,90.0,1
+2025-11-01,Apprenticeships,Abuse or neglect,5,1494,21,90.0,1
+2025-11-01,Apprenticeships,Exploitation,1,1494,21,90.0,1
+2025-11-01,Apprenticeships,Online safety,7,1494,21,90.0,1
+2025-11-01,Apprenticeships,Other recorded concerns,7,1494,21,90.0,1
+2025-12-01,EPYP,Mental health and wellbeing concerns,38,3516,14,87.1,1
+2025-12-01,EPYP,Abuse or neglect,22,3516,14,87.1,1
+2025-12-01,EPYP,Exploitation,7,3516,14,87.1,1
+2025-12-01,EPYP,Online safety,14,3516,14,87.1,1
+2025-12-01,EPYP,Other recorded concerns,16,3516,14,87.1,1
+2025-12-01,Adult,Mental health and wellbeing concerns,25,2549,14,85.7,1
+2025-12-01,Adult,Abuse or neglect,9,2549,14,85.7,1
+2025-12-01,Adult,Exploitation,2,2549,14,85.7,1
+2025-12-01,Adult,Online safety,2,2549,14,85.7,1
+2025-12-01,Adult,Other recorded concerns,7,2549,14,85.7,1
+2025-12-01,Apprenticeships,Mental health and wellbeing concerns,10,1519,14,88.9,1
+2025-12-01,Apprenticeships,Abuse or neglect,1,1519,14,88.9,1
+2025-12-01,Apprenticeships,Exploitation,0,1519,14,88.9,1
+2025-12-01,Apprenticeships,Online safety,1,1519,14,88.9,1
+2025-12-01,Apprenticeships,Other recorded concerns,0,1519,14,88.9,1
+2026-01-01,EPYP,Mental health and wellbeing concerns,40,3406,19,89.0,1
+2026-01-01,EPYP,Abuse or neglect,44,3406,19,89.0,1
+2026-01-01,EPYP,Exploitation,9,3406,19,89.0,1
+2026-01-01,EPYP,Online safety,25,3406,19,89.0,1
+2026-01-01,EPYP,Other recorded concerns,37,3406,19,89.0,1
+2026-01-01,Adult,Mental health and wellbeing concerns,35,2553,19,85.1,1
+2026-01-01,Adult,Abuse or neglect,5,2553,19,85.1,1
+2026-01-01,Adult,Exploitation,8,2553,19,85.1,1
+2026-01-01,Adult,Online safety,11,2553,19,85.1,1
+2026-01-01,Adult,Other recorded concerns,8,2553,19,85.1,1
+2026-01-01,Apprenticeships,Mental health and wellbeing concerns,12,1510,19,90.5,1
+2026-01-01,Apprenticeships,Abuse or neglect,1,1510,19,90.5,1
+2026-01-01,Apprenticeships,Exploitation,1,1510,19,90.5,1
+2026-01-01,Apprenticeships,Online safety,5,1510,19,90.5,1
+2026-01-01,Apprenticeships,Other recorded concerns,5,1510,19,90.5,1
+2026-02-01,EPYP,Mental health and wellbeing concerns,15,3394,14,86.8,1
+2026-02-01,EPYP,Abuse or neglect,19,3394,14,86.8,1
+2026-02-01,EPYP,Exploitation,9,3394,14,86.8,1
+2026-02-01,EPYP,Online safety,17,3394,14,86.8,1
+2026-02-01,EPYP,Other recorded concerns,3,3394,14,86.8,1
+2026-02-01,Adult,Mental health and wellbeing concerns,11,2519,14,84.1,1
+2026-02-01,Adult,Abuse or neglect,5,2519,14,84.1,1
+2026-02-01,Adult,Exploitation,1,2519,14,84.1,1
+2026-02-01,Adult,Online safety,10,2519,14,84.1,1
+2026-02-01,Adult,Other recorded concerns,5,2519,14,84.1,1
+2026-02-01,Apprenticeships,Mental health and wellbeing concerns,12,1490,14,88.5,1
+2026-02-01,Apprenticeships,Abuse or neglect,1,1490,14,88.5,1
+2026-02-01,Apprenticeships,Exploitation,4,1490,14,88.5,1
+2026-02-01,Apprenticeships,Online safety,6,1490,14,88.5,1
+2026-02-01,Apprenticeships,Other recorded concerns,1,1490,14,88.5,1
+2026-03-01,EPYP,Mental health and wellbeing concerns,50,3396,20,88.2,1
+2026-03-01,EPYP,Abuse or neglect,31,3396,20,88.2,1
+2026-03-01,EPYP,Exploitation,18,3396,20,88.2,1
+2026-03-01,EPYP,Online safety,28,3396,20,88.2,1
+2026-03-01,EPYP,Other recorded concerns,15,3396,20,88.2,1
+2026-03-01,Adult,Mental health and wellbeing concerns,28,2473,20,87.7,1
+2026-03-01,Adult,Abuse or neglect,11,2473,20,87.7,1
+2026-03-01,Adult,Exploitation,2,2473,20,87.7,1
+2026-03-01,Adult,Online safety,11,2473,20,87.7,1
+2026-03-01,Adult,Other recorded concerns,14,2473,20,87.7,1
+2026-03-01,Apprenticeships,Mental health and wellbeing concerns,23,1486,20,91.2,1
+2026-03-01,Apprenticeships,Abuse or neglect,6,1486,20,91.2,1
+2026-03-01,Apprenticeships,Exploitation,3,1486,20,91.2,1
+2026-03-01,Apprenticeships,Online safety,2,1486,20,91.2,1
+2026-03-01,Apprenticeships,Other recorded concerns,8,1486,20,91.2,1
+2026-04-01,EPYP,Mental health and wellbeing concerns,38,3392,14,89.6,1
+2026-04-01,EPYP,Abuse or neglect,15,3392,14,89.6,1
+2026-04-01,EPYP,Exploitation,8,3392,14,89.6,1
+2026-04-01,EPYP,Online safety,5,3392,14,89.6,1
+2026-04-01,EPYP,Other recorded concerns,11,3392,14,89.6,1
+2026-04-01,Adult,Mental health and wellbeing concerns,17,2504,14,87.2,1
+2026-04-01,Adult,Abuse or neglect,8,2504,14,87.2,1
+2026-04-01,Adult,Exploitation,3,2504,14,87.2,1
+2026-04-01,Adult,Online safety,3,2504,14,87.2,1
+2026-04-01,Adult,Other recorded concerns,1,2504,14,87.2,1
+2026-04-01,Apprenticeships,Mental health and wellbeing concerns,4,1479,14,93.0,1
+2026-04-01,Apprenticeships,Abuse or neglect,4,1479,14,93.0,1
+2026-04-01,Apprenticeships,Exploitation,1,1479,14,93.0,1
+2026-04-01,Apprenticeships,Online safety,2,1479,14,93.0,1
+2026-04-01,Apprenticeships,Other recorded concerns,1,1479,14,93.0,1
+2026-05-01,EPYP,Mental health and wellbeing concerns,37,3366,17,90.0,1
+2026-05-01,EPYP,Abuse or neglect,24,3366,17,90.0,1
+2026-05-01,EPYP,Exploitation,7,3366,17,90.0,1
+2026-05-01,EPYP,Online safety,16,3366,17,90.0,1
+2026-05-01,EPYP,Other recorded concerns,20,3366,17,90.0,1
+2026-05-01,Adult,Mental health and wellbeing concerns,14,2469,17,86.5,1
+2026-05-01,Adult,Abuse or neglect,17,2469,17,86.5,1
+2026-05-01,Adult,Exploitation,5,2469,17,86.5,1
+2026-05-01,Adult,Online safety,9,2469,17,86.5,1
+2026-05-01,Adult,Other recorded concerns,5,2469,17,86.5,1
+2026-05-01,Apprenticeships,Mental health and wellbeing concerns,15,1469,17,89.6,1
+2026-05-01,Apprenticeships,Abuse or neglect,3,1469,17,89.6,1
+2026-05-01,Apprenticeships,Exploitation,2,1469,17,89.6,1
+2026-05-01,Apprenticeships,Online safety,1,1469,17,89.6,1
+2026-05-01,Apprenticeships,Other recorded concerns,3,1469,17,89.6,1
+2026-06-01,EPYP,Mental health and wellbeing concerns,14,3359,18,90.4,1
+2026-06-01,EPYP,Abuse or neglect,23,3359,18,90.4,1
+2026-06-01,EPYP,Exploitation,11,3359,18,90.4,1
+2026-06-01,EPYP,Online safety,11,3359,18,90.4,1
+2026-06-01,EPYP,Other recorded concerns,17,3359,18,90.4,1
+2026-06-01,Adult,Mental health and wellbeing concerns,9,2507,18,87.5,1
+2026-06-01,Adult,Abuse or neglect,11,2507,18,87.5,1
+2026-06-01,Adult,Exploitation,6,2507,18,87.5,1
+2026-06-01,Adult,Online safety,2,2507,18,87.5,1
+2026-06-01,Adult,Other recorded concerns,1,2507,18,87.5,1
+2026-06-01,Apprenticeships,Mental health and wellbeing concerns,7,1457,18,91.7,1
+2026-06-01,Apprenticeships,Abuse or neglect,5,1457,18,91.7,1
+2026-06-01,Apprenticeships,Exploitation,1,1457,18,91.7,1
+2026-06-01,Apprenticeships,Online safety,3,1457,18,91.7,1
+2026-06-01,Apprenticeships,Other recorded concerns,2,1457,18,91.7,1
+2026-07-01,EPYP,Mental health and wellbeing concerns,15,3291,6,89.2,1
+2026-07-01,EPYP,Abuse or neglect,6,3291,6,89.2,1
+2026-07-01,EPYP,Exploitation,0,3291,6,89.2,1
+2026-07-01,EPYP,Online safety,4,3291,6,89.2,1
+2026-07-01,EPYP,Other recorded concerns,12,3291,6,89.2,1
+2026-07-01,Adult,Mental health and wellbeing concerns,2,2446,6,87.3,1
+2026-07-01,Adult,Abuse or neglect,3,2446,6,87.3,1
+2026-07-01,Adult,Exploitation,2,2446,6,87.3,1
+2026-07-01,Adult,Online safety,5,2446,6,87.3,1
+2026-07-01,Adult,Other recorded concerns,1,2446,6,87.3,1
+2026-07-01,Apprenticeships,Mental health and wellbeing concerns,10,1418,6,90.8,1
+2026-07-01,Apprenticeships,Abuse or neglect,3,1418,6,90.8,1
+2026-07-01,Apprenticeships,Exploitation,0,1418,6,90.8,1
+2026-07-01,Apprenticeships,Online safety,2,1418,6,90.8,1
+2026-07-01,Apprenticeships,Other recorded concerns,2,1418,6,90.8,1
+2026-08-01,EPYP,Mental health and wellbeing concerns,6,3285,2,89.7,1
+2026-08-01,EPYP,Abuse or neglect,2,3285,2,89.7,1
+2026-08-01,EPYP,Exploitation,3,3285,2,89.7,1
+2026-08-01,EPYP,Online safety,2,3285,2,89.7,1
+2026-08-01,EPYP,Other recorded concerns,5,3285,2,89.7,1
+2026-08-01,Adult,Mental health and wellbeing concerns,1,2461,2,86.2,1
+2026-08-01,Adult,Abuse or neglect,0,2461,2,86.2,1
+2026-08-01,Adult,Exploitation,1,2461,2,86.2,1
+2026-08-01,Adult,Online safety,0,2461,2,86.2,1
+2026-08-01,Adult,Other recorded concerns,0,2461,2,86.2,1
+2026-08-01,Apprenticeships,Mental health and wellbeing concerns,0,1432,2,91.7,1
+2026-08-01,Apprenticeships,Abuse or neglect,2,1432,2,91.7,1
+2026-08-01,Apprenticeships,Exploitation,0,1432,2,91.7,1
+2026-08-01,Apprenticeships,Online safety,2,1432,2,91.7,1
+2026-08-01,Apprenticeships,Other recorded concerns,4,1432,2,91.7,1
