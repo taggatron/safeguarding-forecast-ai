@@ -239,3 +239,14 @@ def get_trends_and_insights(
 def get_recent_forecast_runs(limit: int = Query(default=20, ge=1, le=100)) -> Dict[str, Any]:
     return {"runs": platform_service.db.list_forecast_runs(limit=limit)}
 
+
+@router.get("/benchmark/count-models")
+def get_count_models_benchmark(
+    horizon_weeks: int = Query(default=26, ge=4, le=52),
+) -> Dict[str, Any]:
+    """Run and return the NB2 GLM vs. ZINB vs. Tweedie LightGBM count benchmark & DSL governance report."""
+    from app.models.safeguarding_benchmark import run_expanding_window_benchmark
+
+    return run_expanding_window_benchmark(horizon_weeks=horizon_weeks)
+
+
