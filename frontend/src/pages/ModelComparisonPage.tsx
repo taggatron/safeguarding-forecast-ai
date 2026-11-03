@@ -36,6 +36,7 @@ import type {
   DatasetSummaryResponse,
   ModelAvailabilityItem,
 } from '../types/api';
+import countBenchmarkSnapshot from '../lib/countBenchmarkSnapshot.json';
 
 interface ModelComparisonPageProps {
   datasetSummary: DatasetSummaryResponse;
@@ -503,6 +504,173 @@ export const ModelComparisonPage: React.FC<ModelComparisonPageProps> = ({
           </CardContent>
         </Card>
       </div>
+
+      {/* Weekly Count-Forecasting Benchmark (NB2 GLM vs. ZINB vs. Tweedie LightGBM) */}
+      <Card className="border-teal-200/80">
+        <CardHeader className="bg-slate-50/70 border-b border-slate-100 rounded-t-2xl">
+          <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <Badge variant="teal">Kaggle Count Benchmark Suite</Badge>
+                <Badge variant="blue">Expanding-Window Out-of-Time CV</Badge>
+              </div>
+              <CardTitle className="mt-1.5">
+                Weekly Count-Forecasting Benchmark: NB2 GLM vs. ZINB vs. Tweedie LightGBM
+              </CardTitle>
+              <CardDescription>
+                Evaluated across 3 expanding-window weekly origins (78, 104, 130 weeks; 26-week horizon) using DengAI, Recruit (RMSLE), M5 Accuracy (RMSSE / WRMSSE), and M5 Uncertainty (Pinball Loss, WSPL, 95% PICP) metrics with exact active learner exposure offsets (<code className="font-mono text-[11px]">ln N_t</code>).
+              </CardDescription>
+            </div>
+            <div className="rounded-xl bg-teal-50 border border-teal-200 px-3.5 py-2 text-xs text-teal-950 max-w-md">
+              <strong className="font-bold block">VIF Multicollinearity Diagnostic:</strong>
+              {countBenchmarkSnapshot.vif_diagnostics.collinearity_note}
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-6 pt-5">
+          <div tabIndex={0} role="region" aria-label="Weekly count-forecasting benchmark table" className="table-wrapper rounded-xl border border-slate-200">
+            <table className="responsive-stack text-left text-xs">
+              <thead className="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200">
+                <tr>
+                  <th className="py-2.5 px-3">Count Architecture</th>
+                  <th className="py-2.5 px-2.5 text-right">MAE</th>
+                  <th className="py-2.5 px-2.5 text-right">Surge MAE</th>
+                  <th className="py-2.5 px-2.5 text-right">NB Dev</th>
+                  <th className="py-2.5 px-2.5 text-right">RMSLE</th>
+                  <th className="py-2.5 px-2.5 text-right">RMSSE</th>
+                  <th className="py-2.5 px-2.5 text-right">WRMSSE</th>
+                  <th className="py-2.5 px-2.5 text-right">Pinball (0.90)</th>
+                  <th className="py-2.5 px-2.5 text-right">Pinball (0.975)</th>
+                  <th className="py-2.5 px-2.5 text-right">WSPL</th>
+                  <th className="py-2.5 px-2.5 text-right">95% PICP</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100">
+                {countBenchmarkSnapshot.benchmark_comparison_table.map((row) => (
+                  <tr
+                    key={row.model_id}
+                    className={
+                      row.model_id === 'nb2_glm' || row.model_id === 'zinb_model'
+                        ? 'bg-teal-50/30 hover:bg-teal-50/60'
+                        : 'hover:bg-slate-50'
+                    }
+                  >
+                    <th className="py-2.5 px-3 font-bold text-slate-900">
+                      <div className="flex items-center gap-1.5">
+                        <span>{row.model_name}</span>
+                        {row.model_id === 'nb2_glm' && <Badge variant="blue">Governance Champion</Badge>}
+                        {row.model_id === 'zinb_model' && <Badge variant="teal">Best Tail / Sparse Regime</Badge>}
+                      </div>
+                    </th>
+                    <td data-label="MAE" className="py-2.5 px-2.5 text-right font-semibold">{row.mae.toFixed(3)}</td>
+                    <td data-label="Surge MAE" className="py-2.5 px-2.5 text-right">{row.surge_mae.toFixed(3)}</td>
+                    <td data-label="NB Deviance" className="py-2.5 px-2.5 text-right">{row.nb_deviance.toFixed(4)}</td>
+                    <td data-label="RMSLE" className="py-2.5 px-2.5 text-right font-semibold text-teal-800">{row.rmsle.toFixed(4)}</td>
+                    <td data-label="RMSSE" className="py-2.5 px-2.5 text-right">{row.rmsse.toFixed(4)}</td>
+                    <td data-label="WRMSSE" className="py-2.5 px-2.5 text-right">{row.wrmsse.toFixed(4)}</td>
+                    <td data-label="Pinball 0.90" className="py-2.5 px-2.5 text-right">{row.pinball_900.toFixed(4)}</td>
+                    <td data-label="Pinball 0.975" className="py-2.5 px-2.5 text-right font-bold text-slate-900">{row.pinball_975.toFixed(4)}</td>
+                    <td data-label="WSPL" className="py-2.5 px-2.5 text-right font-semibold">{row.wspl.toFixed(4)}</td>
+                    <td data-label="95% PICP" className="py-2.5 px-2.5 text-right">
+                      <Badge variant={row.picp_95 >= 92 ? 'emerald' : 'amber'}>
+                        {row.picp_95.toFixed(1)}%
+                      </Badge>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* KCSIE / GDPR Governance IRR Audit Table & Weekly DSL Triage Capacity Schedule */}
+          <div className="grid grid-cols-1 gap-6 xl:grid-cols-2">
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-blue-600" />
+                  KCSIE / GDPR Governance Audit: NB2 Incidence Rate Ratios (IRR)
+                </h3>
+                <Badge variant="blue">Exact Exposure Offset ln(N_t)</Badge>
+              </div>
+              <div tabIndex={0} role="region" aria-label="NB2 GLM Incidence Rate Ratio table" className="table-wrapper rounded-xl border border-slate-200 max-h-[360px]">
+                <table className="responsive-stack text-left text-xs">
+                  <thead className="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200 sticky top-0">
+                    <tr>
+                      <th className="py-2 px-2.5">Predictor</th>
+                      <th className="py-2 px-2 text-right">Beta</th>
+                      <th className="py-2 px-2 text-right">IRR = exp(β)</th>
+                      <th className="py-2 px-2 text-right">95% CI</th>
+                      <th className="py-2 px-2 text-right">p-val</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {countBenchmarkSnapshot.dsl_governance_irr_table
+                      .filter((r) => r.feature_name !== 'const')
+                      .map((r) => (
+                        <tr key={r.feature_name} className="hover:bg-slate-50">
+                          <th className="py-2 px-2.5 font-semibold text-slate-800">
+                            <div>{r.feature_label}</div>
+                            <div className="text-[10px] font-mono text-slate-400">{r.feature_name}</div>
+                          </th>
+                          <td data-label="Beta" className="py-2 px-2 text-right font-mono">{r.beta.toFixed(3)}</td>
+                          <td data-label="IRR" className="py-2 px-2 text-right font-bold text-slate-900">{r.irr.toFixed(3)}x</td>
+                          <td data-label="95% CI" className="py-2 px-2 text-right font-mono text-[11px] text-slate-600">
+                            [{r.irr_ci_lower_95.toFixed(2)}, {r.irr_ci_upper_95.toFixed(2)}]
+                          </td>
+                          <td data-label="p-value" className="py-2 px-2 text-right font-mono text-[11px]">
+                            {r.p_value < 0.001 ? '<0.001' : r.p_value.toFixed(3)}
+                          </td>
+                        </tr>
+                      ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <div className="space-y-2.5">
+              <div className="flex items-center justify-between">
+                <h3 className="font-display text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                  <Clock className="h-4 w-4 text-teal-600" />
+                  DSL Weekly Triage Capacity Schedule (90th & 97.5th Tail Bounds)
+                </h3>
+                <Badge variant="amber">Baseline DSL Capacity: 36.0 / wk</Badge>
+              </div>
+              <div tabIndex={0} role="region" aria-label="DSL weekly triage schedule" className="table-wrapper rounded-xl border border-slate-200 max-h-[360px]">
+                <table className="responsive-stack text-left text-xs">
+                  <thead className="bg-slate-100 text-slate-700 font-semibold border-b border-slate-200 sticky top-0">
+                    <tr>
+                      <th className="py-2 px-2.5">Week Start</th>
+                      <th className="py-2 px-2 text-right">Expected (μ̂)</th>
+                      <th className="py-2 px-2 text-right">Q90</th>
+                      <th className="py-2 px-2 text-right">Q97.5</th>
+                      <th className="py-2 px-2.5">Triage Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100">
+                    {countBenchmarkSnapshot.dsl_weekly_triage_schedule.slice(0, 12).map((w) => (
+                      <tr key={w.week_start} className={w.exceeds_q90_capacity ? 'bg-rose-50/40' : 'hover:bg-slate-50'}>
+                        <th className="py-2 px-2.5 font-mono font-semibold text-slate-800">
+                          {w.week_start} <span className="text-[10px] text-slate-400">(W{w.week_of_academic_year})</span>
+                        </th>
+                        <td data-label="Expected" className="py-2 px-2 text-right font-semibold">{w.expected_referrals_mu.toFixed(1)}</td>
+                        <td data-label="Q90" className="py-2 px-2 text-right font-semibold text-amber-800">{w.q_90.toFixed(0)}</td>
+                        <td data-label="Q97.5" className="py-2 px-2 text-right font-bold text-rose-800">{w.q_975.toFixed(0)}</td>
+                        <td data-label="Status" className="py-2 px-2.5">
+                          {w.exceeds_q90_capacity ? (
+                            <Badge variant="rose">High Alert (&gt;36/wk)</Badge>
+                          ) : (
+                            <Badge variant="emerald">Within Capacity</Badge>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
