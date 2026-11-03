@@ -98,3 +98,4 @@ jobs:
         if: env.VERCEL_TOKEN == ''
         run: |
           echo "Tests and build succeeded. To enable automated Vercel CLI deployment from GitHub Actions, add VERCEL_TOKEN to repository secrets."
+
