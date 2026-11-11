@@ -355,7 +355,7 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
       </Card>
 
       {/* VISUAL SPEC 1: HILBERT STRESS-CYCLE PHASE CLOCK */}
-      <Card data-testid="hilbert-phase-clock-panel">
+      <Card className="scroll-mt-24" data-testid="hilbert-phase-clock-panel">
         <CardHeader className="pb-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -458,20 +458,28 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
 
                 {/* Ring Labels */}
                 <text
-                  x={dialCx + 4}
+                  x={dialCx + 5}
                   y={dialCy - 1.0 * dialScale + 12}
                   fontSize="9.5"
                   fontWeight="600"
                   fill="#475569"
+                  paintOrder="stroke"
+                  stroke="#FFFFFF"
+                  strokeWidth="3.5"
+                  strokeLinejoin="round"
                 >
                   1.0σ Normal
                 </text>
                 <text
-                  x={dialCx + 4}
+                  x={dialCx + 5}
                   y={dialCy - 2.0 * dialScale - 4}
                   fontSize="9.5"
                   fontWeight="700"
                   fill="#DC2626"
+                  paintOrder="stroke"
+                  stroke="#FFFFFF"
+                  strokeWidth="3.5"
+                  strokeLinejoin="round"
                 >
                   2.0σ Breach
                 </text>
@@ -744,7 +752,7 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
       </Card>
 
       {/* VISUAL SPEC 2: HAWKES CONTAGION CASCADE & BRANCHING MONITOR */}
-      <Card data-testid="hawkes-cascade-panel">
+      <Card className="scroll-mt-24" data-testid="hawkes-cascade-panel">
         <CardHeader className="pb-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
@@ -868,11 +876,16 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                               strokeDasharray="4,3"
                             />
                             <text
-                              x={splitX + 5}
+                              x={hx1 - 2}
                               y={hy0 + 12}
+                              textAnchor="end"
                               fontSize="9.5"
                               fontWeight="700"
                               fill="#334155"
+                              paintOrder="stroke"
+                              stroke="#FFFFFF"
+                              strokeWidth="3"
+                              strokeLinejoin="round"
                             >
                               (t, t+5] Decay Cone
                             </text>
@@ -1031,7 +1044,7 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                                       {edge.source_label} → {edge.target_label}: Γ={edge.branching_ratio}, τ_1/2={edge.half_life_days}d
                                     </title>
                                   </path>
-                                  {idx < 3 && (
+                                  {idx === 0 && (
                                     <text
                                       x={mx}
                                       y={my}
@@ -1039,6 +1052,10 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                                       fontSize="8.5"
                                       fontWeight="700"
                                       fill="#1E293B"
+                                      paintOrder="stroke"
+                                      stroke="#FFFFFF"
+                                      strokeWidth="3.2"
+                                      strokeLinejoin="round"
                                     >
                                       τ½={edge.half_life_days}d
                                     </text>
@@ -1146,7 +1163,7 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
       </Card>
 
       {/* VISUAL SPEC 3: SHEAF FRUSTRATION & CONTEXTUAL MASKING ALERT BOARD */}
-      <Card data-testid="sheaf-frustration-panel">
+      <Card className="scroll-mt-24" data-testid="sheaf-frustration-panel">
         <CardHeader className="pb-2">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">

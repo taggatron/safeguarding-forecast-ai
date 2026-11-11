@@ -200,10 +200,12 @@ def build_hilbert_clock_spec(f01_diag: Dict[str, Any], t_idx: int) -> Dict[str, 
     }
 
 
-def render_hilbert_clock_svg(spec: Dict[str, Any], width: int = 520, height: int = 420) -> str:
+def render_hilbert_clock_svg(spec: Dict[str, Any], width: int = 560, height: int = 390) -> str:
     """Render standalone crisp SVG for the Hilbert Stress-Cycle Phase Clock."""
-    cx, cy = 215.0, 195.0
-    radius_px = 148.0
+    import html as _html
+
+    cx, cy = 205.0, 195.0
+    radius_px = 144.0
     max_r = float(spec["dial_max_r"])
     scale = radius_px / max(max_r, 1e-6)
 
@@ -211,7 +213,7 @@ def render_hilbert_clock_svg(spec: Dict[str, Any], width: int = 520, height: int
     r2 = 2.0 * scale
 
     parts: List[str] = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="100%" role="img" aria-label="Hilbert Stress-Cycle Phase Clock">',
+        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {width} {height}" width="100%" style="max-width:680px;height:auto;display:block;margin:0 auto;" role="img" aria-label="Hilbert Stress-Cycle Phase Clock">',
         '<defs>',
         '<marker id="hilbert-vel-arrow" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">',
         f'<path d="M0,1 L7,4 L0,7 Z" fill="{spec["current"]["quadrant"]["color"]}" />',
@@ -230,10 +232,10 @@ def render_hilbert_clock_svg(spec: Dict[str, Any], width: int = 520, height: int
         f'<circle cx="{cx}" cy="{cy}" r="{r1:.1f}" fill="none" stroke="#475569" stroke-width="1.4" />',
         f'<circle cx="{cx}" cy="{cy}" r="{r2:.1f}" fill="none" stroke="#DC2626" stroke-width="1.6" stroke-dasharray="5,4" />',
         # Quadrant labels
-        f'<text x="{cx + radius_px - 8}" y="{cy - radius_px + 18}" text-anchor="end" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#B45309">QI: Escalating</text>',
-        f'<text x="{cx - radius_px + 8}" y="{cy - radius_px + 18}" text-anchor="start" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#B91C1C">QII: Peak Crest</text>',
-        f'<text x="{cx - radius_px + 8}" y="{cy + radius_px - 10}" text-anchor="start" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#0F766E">QIII: Decompression</text>',
-        f'<text x="{cx + radius_px - 8}" y="{cy + radius_px - 10}" text-anchor="end" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#4338CA">QIV: Incubation</text>',
+        f'<text x="{cx + radius_px - 6}" y="28" text-anchor="end" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="#B45309">QI · Escalating</text>',
+        f'<text x="{cx - radius_px + 6}" y="28" text-anchor="start" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="#B91C1C">QII · Peak Crest</text>',
+        f'<text x="{cx - radius_px + 6}" y="{height - 18}" text-anchor="start" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="#0F766E">QIII · Decompression</text>',
+        f'<text x="{cx + radius_px - 6}" y="{height - 18}" text-anchor="end" font-family="Inter,sans-serif" font-size="10.5" font-weight="700" fill="#4338CA">QIV · Incubation</text>',
     ]
 
     pts = spec["comet_trajectory"]
@@ -269,19 +271,28 @@ def render_hilbert_clock_svg(spec: Dict[str, Any], width: int = 520, height: int
                 f'stroke="{spec["current"]["quadrant"]["color"]}" stroke-width="2" marker-end="url(#hilbert-vel-arrow)" />'
             )
         beacon_col = "#DC2626" if spec["current"]["is_breach_2sigma"] else spec["current"]["quadrant"]["color"]
-        parts.append(f'<circle cx="{hx:.2f}" y="{hy:.2f}" r="9" fill="{beacon_col}" fill-opacity="0.22" />')
-        parts.append(f'<circle cx="{hx:.2f}" y="{hy:.2f}" r="5.2" fill="{beacon_col}" stroke="#FFFFFF" stroke-width="1.8" />')
+        parts.append(f'<circle cx="{hx:.2f}" cy="{hy:.2f}" r="9" fill="{beacon_col}" fill-opacity="0.22" />')
+        parts.append(f'<circle cx="{hx:.2f}" cy="{hy:.2f}" r="5.2" fill="{beacon_col}" stroke="#FFFFFF" stroke-width="1.8" />')
+
+    # Ring Labels (rendered above comet with crisp white halo)
+    parts.append(
+        f'<text x="{cx + 5}" y="{cy - r1 + 12:.1f}" font-family="Inter,sans-serif" font-size="9.5" font-weight="600" fill="#475569" paint-order="stroke" stroke="#FFFFFF" stroke-width="3.2" stroke-linejoin="round">1.0σ Normal</text>'
+    )
+    parts.append(
+        f'<text x="{cx + 5}" y="{cy - r2 - 4:.1f}" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="#DC2626" paint-order="stroke" stroke="#FFFFFF" stroke-width="3.2" stroke-linejoin="round">2.0σ Breach</text>'
+    )
 
     # Right summary callout column inside SVG
     cur = spec["current"]
+    q_title_esc = _html.escape(str(cur["quadrant"]["title"]))
     parts.extend(
         [
-            f'<text x="385" y="68" font-family="Plus Jakarta Sans,sans-serif" font-size="11" font-weight="700" fill="#334155">ACTIVE PHASE STATE</text>',
-            f'<text x="385" y="90" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="{cur["quadrant"]["color"]}">{cur["quadrant"]["title"]}</text>',
-            f'<text x="385" y="114" font-family="Inter,sans-serif" font-size="11" fill="#475569">Amplitude r(t): {cur["r_norm"]:.2f}σ</text>',
-            f'<text x="385" y="134" font-family="Inter,sans-serif" font-size="11" fill="#475569">Phase Angle φ(t): {cur["phi_deg"]:+.1f}°</text>',
-            f'<text x="385" y="154" font-family="Inter,sans-serif" font-size="11" fill="#475569">Acad Day t_acad: {cur["t_acad"]:.0f}</text>',
-            f'<text x="385" y="176" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#0F172A">Est. Crest: {cur["days_to_peak"]:.1f} inst.d</text>',
+            f'<text x="372" y="96" font-family="Plus Jakarta Sans,sans-serif" font-size="10.5" font-weight="700" fill="#64748B">ACTIVE PHASE STATE</text>',
+            f'<text x="372" y="120" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="{cur["quadrant"]["color"]}">{q_title_esc}</text>',
+            f'<text x="372" y="146" font-family="Inter,sans-serif" font-size="11.5" fill="#334155">Amplitude r(t): {cur["r_norm"]:.2f}σ</text>',
+            f'<text x="372" y="168" font-family="Inter,sans-serif" font-size="11.5" fill="#334155">Phase Angle φ(t): {cur["phi_deg"]:+.1f}°</text>',
+            f'<text x="372" y="190" font-family="Inter,sans-serif" font-size="11.5" fill="#334155">Acad Day t_acad: {cur["t_acad"]:.0f}</text>',
+            f'<text x="372" y="216" font-family="Inter,sans-serif" font-size="12" font-weight="700" fill="#4F46E5">Est. Crest: {cur["days_to_peak"]:.1f} inst.d</text>',
             '</svg>',
         ]
     )

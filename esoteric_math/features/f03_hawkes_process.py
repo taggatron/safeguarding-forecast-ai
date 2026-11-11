@@ -49,6 +49,8 @@ def _compute_hawkes_recursion(
     alpha: np.ndarray,
     beta: np.ndarray,
     dt_steps: np.ndarray,
+    endog_gate: Optional[np.ndarray] = None,
+    shock_floor_ratio: float = 0.0,
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Strictly causal discrete-time Hawkes excitation recursion over T steps and C categories.
@@ -58,6 +60,7 @@ def _compute_hawkes_recursion(
     """
     T, C = counts.shape
     mu_t = np.maximum(1e-4, seasonal_scale[:, None] * mu_base[None, :])
+    gate = np.ones((T, 1, 1), dtype=float) if endog_gate is None else np.asarray(endog_gate, dtype=float).reshape(T, 1, 1)
     mem_pre = np.zeros((T, C, C), dtype=float)
     mem_post = np.zeros((T, C, C), dtype=float)
     cur_mem = np.zeros((C, C), dtype=float)
@@ -66,11 +69,11 @@ def _compute_hawkes_recursion(
         dt = max(0.2, float(dt_steps[t]))
         decay = np.exp(-beta * dt)
         cur_mem = cur_mem * decay
-        mem_pre[t] = cur_mem
-        # Incorporate step t excess/count shock into post-step memory (still strictly <= t!)
-        shock_t = np.maximum(0.0, counts[t])
+        mem_pre[t] = cur_mem * gate[t]
+        # Incorporate step t count/excess shock into post-step memory (still strictly <= t!)
+        shock_t = np.maximum(0.0, counts[t] - shock_floor_ratio * mu_t[t])
         cur_mem = cur_mem + alpha * shock_t[None, :]
-        mem_post[t] = cur_mem
+        mem_post[t] = cur_mem * gate[t]
 
     endog_sum = np.sum(mem_pre, axis=2)
     lam_t = np.maximum(1e-4, mu_t + endog_sum)
@@ -122,6 +125,14 @@ class HawkesContagionTransformer(CausalBaseTransformer):
 
         seas_scale = self._build_seasonal_scale(bundle, self.base_enrol_)
         dt_steps = np.ones(T_tr, dtype=float)
+        is_daily = (ta.cadence == "daily")
+        endog_gate_tr = (
+            np.where(ta.is_instructional > 0.15, np.maximum(0.45, ta.is_instructional), 0.08)
+            if is_daily
+            else None
+        )
+        shock_floor = 0.35 if is_daily else 0.0
+        self.shock_floor_ = shock_floor
 
         mean_counts = np.maximum(0.05, np.mean(counts_tr, axis=0))
         mean_seas = max(0.1, float(np.mean(seas_scale)))
@@ -154,7 +165,16 @@ class HawkesContagionTransformer(CausalBaseTransformer):
             gam = alp / bet
             rho = _spectral_radius(gam)
 
-            _, _, _, lam = _compute_hawkes_recursion(counts_tr, seas_scale, mu_b, alp, bet, dt_steps)
+            _, _, _, lam = _compute_hawkes_recursion(
+                counts_tr,
+                seas_scale,
+                mu_b,
+                alp,
+                bet,
+                dt_steps,
+                endog_gate=endog_gate_tr,
+                shock_floor_ratio=shock_floor,
+            )
             # Point-process / Poisson conditional log-likelihood + soft spectral barrier
             nll = float(np.sum(lam - counts_tr * np.log(np.maximum(1e-8, lam)))) / max(1, T_tr)
             reg = 0.015 * float(np.sum(gam**2)) + 0.005 * float(np.sum(( np.log(bet / 0.35) ) ** 2))
@@ -202,17 +222,38 @@ class HawkesContagionTransformer(CausalBaseTransformer):
         # (which equals `mem_pre` on raw counts, i.e., strictly reading {0, ..., t-1}!).
         seas_scale = self._build_seasonal_scale(bundle, self.base_enrol_)
         dt_steps = np.ones(n, dtype=float)
+        is_daily = (ta.cadence == "daily")
+        endog_gate = (
+            np.where(ta.is_instructional > 0.15, np.maximum(0.45, ta.is_instructional), 0.08)
+            if is_daily
+            else None
+        )
+        shock_floor = float(getattr(self, "shock_floor_", 0.35 if is_daily else 0.0))
 
         if bundle.causal_mode == "forecast":
             mu_t, _, mem_active, _ = _compute_hawkes_recursion(
-                tb.category_counts, seas_scale, self.mu_base_, self.alpha_, self.beta_, dt_steps
+                tb.category_counts,
+                seas_scale,
+                self.mu_base_,
+                self.alpha_,
+                self.beta_,
+                dt_steps,
+                endog_gate=endog_gate,
+                shock_floor_ratio=shock_floor,
             )
             endog_by_target = np.sum(mem_active, axis=2)
             lam_t = np.maximum(1e-4, mu_t + endog_by_target)
             mem_cone_anchor = mem_active
         else:
             mu_t, mem_pre, mem_post, lam_t = _compute_hawkes_recursion(
-                tb.raw_category_counts, seas_scale, self.mu_base_, self.alpha_, self.beta_, dt_steps
+                tb.raw_category_counts,
+                seas_scale,
+                self.mu_base_,
+                self.alpha_,
+                self.beta_,
+                dt_steps,
+                endog_gate=endog_gate,
+                shock_floor_ratio=shock_floor,
             )
             mem_active = mem_pre
             endog_by_target = np.sum(mem_pre, axis=2)

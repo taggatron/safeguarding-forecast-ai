@@ -62,6 +62,25 @@ COHORT_DISPLAY_SHORT: Dict[str, str] = {
     "Digital, Computing & Creative": "Digital & Creative",
     "Engineering, Marine & Automotive": "Engineering & Marine",
     "Adult Access & Work-Based Apprenticeships": "Adult & Apprentices",
+    "epyp_send": "EPYP & SEND",
+    "epyp_and_send": "EPYP & SEND",
+    "health_social_care": "Health & Social Care",
+    "health_and_social_care": "Health & Social Care",
+    "construction_trades": "Construction Trades",
+    "digital_creative": "Digital & Creative",
+    "digital_and_creative": "Digital & Creative",
+    "engineering_marine": "Engineering & Marine",
+    "engineering_and_marine": "Engineering & Marine",
+    "adult_apprentices": "Adult & Apprentices",
+    "adult_and_apprentices": "Adult & Apprentices",
+}
+
+CATEGORY_DISPLAY_SHORT: Dict[str, str] = {
+    "mental_health": "Mental Health",
+    "abuse_neglect": "Abuse & Neglect",
+    "online_safety": "Online Safety",
+    "exploitation": "Exploitation",
+    "other_concerns": "Other Concerns",
 }
 
 
@@ -583,7 +602,10 @@ class AdaptiveSchemaBridge:
 
         if wide_cat_cols:
             cat_names = [
-                c.replace("cat_", "").replace("_", " ").title() for c in wide_cat_cols
+                CATEGORY_DISPLAY_SHORT.get(
+                    c[len("cat_") :], c.replace("cat_", "").replace("_", " ").title()
+                )
+                for c in wide_cat_cols
             ]
             raw_cats = np.column_stack(
                 [

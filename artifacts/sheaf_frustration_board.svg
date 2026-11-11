@@ -17,24 +17,24 @@
 <rect x="133.9" y="249.0" width="36" height="17" rx="8" fill="#DC2626" />
 <text x="151.9" y="261.0" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">+3.7z</text>
 <circle cx="235.0" cy="162.0" r="23.1" fill="#DC2626" stroke="#FFFFFF" stroke-width="2" />
-<text x="235.0" y="198.1" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Adult Apprentices</text>
+<text x="235.0" y="198.1" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Adult &amp; Apprentices</text>
 <circle cx="318.1" cy="210.0" r="20.4" fill="#DC2626" stroke="#FFFFFF" stroke-width="2" />
 <text x="318.1" y="243.4" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Construction Trades</text>
 <circle cx="318.1" cy="306.0" r="18.7" fill="#DC2626" stroke="#FFFFFF" stroke-width="2" />
-<text x="318.1" y="337.7" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Digital Creative</text>
+<text x="318.1" y="337.7" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Digital &amp; Creative</text>
 <circle cx="235.0" cy="354.0" r="19.3" fill="#DC2626" stroke="#FFFFFF" stroke-width="2" />
-<text x="235.0" y="386.3" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Engineering Marine</text>
+<text x="235.0" y="386.3" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Engineering &amp; Marine</text>
 <circle cx="151.9" cy="306.0" r="16.9" fill="#DC2626" stroke="#FFFFFF" stroke-width="2" />
-<text x="151.9" y="335.9" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Epyp Send</text>
+<text x="151.9" y="335.9" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">EPYP &amp; SEND</text>
 <circle cx="151.9" cy="210.0" r="19.6" fill="#475569" stroke="#FFFFFF" stroke-width="2" />
-<text x="151.9" y="242.6" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Health Social Care</text>
+<text x="151.9" y="242.6" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">Health &amp; Social Care</text>
 <rect x="460" y="148.0" width="372" height="74" rx="8" fill="#F8FAFC" stroke="#DC2626" stroke-width="1.4" />
-<text x="474" y="169.0" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="#DC2626">Epyp Send — 4.9σ Frustration — Contextual Masking Detected</text>
+<text x="474" y="169.0" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="#DC2626">EPYP &amp; SEND — 4.9σ Frustration — Contextual Masking Detected</text>
 <text x="474" y="192.0" font-family="Inter,sans-serif" font-size="10" fill="#334155">High surface attendance (+2.5 SD above peer consensus) is masking sh...</text>
 <rect x="460" y="230.0" width="372" height="74" rx="8" fill="#F8FAFC" stroke="#DC2626" stroke-width="1.4" />
-<text x="474" y="251.0" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="#DC2626">Adult Apprentices — 3.8σ Frustration — Contextual Masking Detected</text>
+<text x="474" y="251.0" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="#DC2626">Adult &amp; Apprentices — 3.8σ Frustration — Contextual Masking Detected</text>
 <text x="474" y="274.0" font-family="Inter,sans-serif" font-size="10" fill="#334155">Cohomological divergence driven by workshop / maths-eng engagement (...</text>
 <rect x="460" y="312.0" width="372" height="74" rx="8" fill="#F8FAFC" stroke="#DC2626" stroke-width="1.4" />
-<text x="474" y="333.0" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="#DC2626">Digital Creative — 3.6σ Frustration — Contextual Masking Detected</text>
+<text x="474" y="333.0" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="#DC2626">Digital &amp; Creative — 3.6σ Frustration — Contextual Masking Detected</text>
 <text x="474" y="356.0" font-family="Inter,sans-serif" font-size="10" fill="#334155">High surface attendance (+1.1 SD above peer consensus) is masking sh...</text>
 </svg>

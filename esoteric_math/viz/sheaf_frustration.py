@@ -322,13 +322,15 @@ def render_sheaf_frustration_svg(spec: Dict[str, Any], width: int = 860, height:
                 f'<text x="{mx:.1f}" y="{my + 3:.1f}" text-anchor="middle" font-family="Inter,sans-serif" font-size="9.5" font-weight="700" fill="#FFFFFF">{edge["frustration_z"]:+.1f}z</text>'
             )
 
+    import html as _html
+
     for nd in nodes:
         nx, ny = gcx + nd["x_unit"] * gr, gcy + nd["y_unit"] * gr
         parts.append(
             f'<circle cx="{nx:.1f}" cy="{ny:.1f}" r="{nd["radius_px"]:.1f}" fill="{nd["fill_color"]}" stroke="#FFFFFF" stroke-width="2" />'
         )
         parts.append(
-            f'<text x="{nx:.1f}" y="{ny + nd["radius_px"] + 13:.1f}" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">{nd["label"]}</text>'
+            f'<text x="{nx:.1f}" y="{ny + nd["radius_px"] + 13:.1f}" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#1E293B">{_html.escape(str(nd["label"]))}</text>'
         )
 
     # Right triage cards summary inside SVG
@@ -337,8 +339,8 @@ def render_sheaf_frustration_svg(spec: Dict[str, Any], width: int = 860, height:
         parts.extend(
             [
                 f'<rect x="460" y="{cy_card:.1f}" width="372" height="74" rx="8" fill="#F8FAFC" stroke="{card["accent_color"]}" stroke-width="1.4" />',
-                f'<text x="474" y="{cy_card + 21:.1f}" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="{card["accent_color"]}">{card["cohort_label"]} — {card["header_badge"]}</text>',
-                f'<text x="474" y="{cy_card + 44:.1f}" font-family="Inter,sans-serif" font-size="10" fill="#334155">{card["explanation"][:68]}...</text>',
+                f'<text x="474" y="{cy_card + 21:.1f}" font-family="Plus Jakarta Sans,sans-serif" font-size="11.5" font-weight="700" fill="{card["accent_color"]}">{_html.escape(str(card["cohort_label"]))} — {_html.escape(str(card["header_badge"]))}</text>',
+                f'<text x="474" y="{cy_card + 44:.1f}" font-family="Inter,sans-serif" font-size="10" fill="#334155">{_html.escape(str(card["explanation"])[:68])}...</text>',
             ]
         )
         cy_card += 82.0
