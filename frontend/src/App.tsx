@@ -6,6 +6,7 @@ import {
   Scale,
   TrendingUp,
   Database,
+  Activity,
   AlertTriangle,
   CheckCircle2,
   Building2,
@@ -17,6 +18,7 @@ import { ForecastExplorerPage } from './pages/ForecastExplorerPage';
 import { ModelComparisonPage } from './pages/ModelComparisonPage';
 import { TrendsInsightsPage } from './pages/TrendsInsightsPage';
 import { DataManagementPage } from './pages/DataManagementPage';
+import { EsotericTelemetryPage } from './pages/EsotericTelemetryPage';
 import type {
   BacktestResponse,
   DatasetSummaryResponse,
@@ -27,7 +29,7 @@ import type {
   TrendsInsightsResponse,
 } from './types/api';
 
-type NavTab = 'overview' | 'explorer' | 'comparison' | 'trends' | 'data';
+type NavTab = 'overview' | 'explorer' | 'comparison' | 'trends' | 'telemetry' | 'data';
 
 const DEFAULT_SCENARIO: ScenarioAssumptions = {
   enrolment_growth_pct: 0,
@@ -171,6 +173,7 @@ export function App() {
     { id: 'explorer', label: 'Forecast Explorer', icon: <Sliders className="h-4 w-4" /> },
     { id: 'comparison', label: 'Model Comparison', icon: <Scale className="h-4 w-4" /> },
     { id: 'trends', label: 'Trends & Insights', icon: <TrendingUp className="h-4 w-4" /> },
+    { id: 'telemetry', label: 'Early-Warning Telemetry', icon: <Activity className="h-4 w-4" /> },
     { id: 'data', label: 'Data Management', icon: <Database className="h-4 w-4" /> },
   ];
 
@@ -348,6 +351,13 @@ export function App() {
                 selectedCategory={selectedCategory}
                 onSelectCategory={setSelectedCategory}
                 isLoading={isLoading}
+              />
+            )}
+
+            {activeTab === 'telemetry' && (
+              <EsotericTelemetryPage
+                selectedProvision={selectedProvision}
+                onSelectProvision={setSelectedProvision}
               />
             )}
 

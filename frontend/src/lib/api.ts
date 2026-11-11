@@ -1,4 +1,5 @@
 import { vercelFallbackEngine } from './vercelFallbackEngine';
+import esotericTelemetrySnapshot from './esotericTelemetrySnapshot.json';
 import type {
   BacktestResponse,
   DatasetSummaryResponse,
@@ -219,6 +220,18 @@ export const apiClient = {
       `${API_BASE}/models/runs?limit=${limit}`,
       undefined,
       () => vercelFallbackEngine.getRecentForecastRuns()
+    );
+  },
+
+  getEsotericTelemetry(targetDate?: string, provision = 'All'): Promise<any> {
+    const params = new URLSearchParams({ provision });
+    if (targetDate) {
+      params.set('t', targetDate);
+    }
+    return fetchWithFallback(
+      `${API_BASE}/esoteric-telemetry?${params.toString()}`,
+      undefined,
+      () => esotericTelemetrySnapshot
     );
   },
 };

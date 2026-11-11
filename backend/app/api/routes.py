@@ -250,3 +250,30 @@ def get_count_models_benchmark(
     return run_expanding_window_benchmark(horizon_weeks=horizon_weeks)
 
 
+@router.get("/esoteric-telemetry")
+def get_esoteric_telemetry(
+    t: Optional[str] = Query(default=None, description="Causal evaluation ISO date YYYY-MM-DD (masks s > t)"),
+    step_index: Optional[int] = Query(default=None, ge=10, description="Optional causal step index"),
+    provision: str = Query(default="All", description="Provision filter (All, EPYP, Adult, Apprenticeships)"),
+) -> Dict[str, Any]:
+    """
+    Serve strictly causal Mathematical Early-Warning Telemetry JSON payload
+    (Hilbert Stress-Cycle Phase Clock, Hawkes Contagion Cascade, and Sheaf Frustration Triage).
+    """
+    from pathlib import Path
+    import sys
+
+    repo_root = str(Path(__file__).resolve().parent.parent.parent.parent)
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+
+    from esoteric_math.viz.host_mount import telemetry_host_adapter
+
+    return telemetry_host_adapter.get_telemetry_response(
+        t_date=t,
+        t_index=step_index,
+        provision=provision,
+    )
+
+
+
