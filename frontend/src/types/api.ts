@@ -352,3 +352,152 @@ export interface DataValidationReport {
   preview_rows: Record<string, any>[];
 }
 
+export interface EsotericModuleCatalogItem {
+  id: string;
+  short_name: string;
+  name: string;
+  family: string;
+  role: string;
+}
+
+export interface EsotericStrategyItem {
+  id: string;
+  name: string;
+  short_name: string;
+  default_modules: string[];
+  description: string;
+}
+
+export interface EsotericAdmittedFeature {
+  feature: string;
+  module_id: string;
+  module_name: string;
+  weight: number;
+  direction: string;
+  description: string;
+}
+
+export interface EsotericHistoricalPoint {
+  period_start: string;
+  period_label: string;
+  academic_year: string;
+  academic_term: string;
+  actual_count: number;
+  enrolled_students: number;
+  teaching_days: number;
+  rate_per_1000: number;
+}
+
+export interface EsotericForecastPoint {
+  step: number;
+  period_start: string;
+  period_label: string;
+  academic_year: string;
+  academic_term: string;
+  baseline_forecast: number;
+  baseline_lower: number;
+  baseline_upper: number;
+  esoteric_forecast: number;
+  esoteric_raw: number;
+  lower_bound: number;
+  upper_bound: number;
+  lower_80: number;
+  upper_80: number;
+  lower_95: number;
+  upper_95: number;
+  delta_count: number;
+  delta_pct: number;
+  enrolled_students: number;
+  teaching_days: number;
+  rate_per_1000: number;
+  rough_levy_area: number;
+  rough_sig_depth3: number;
+  hilbert_phase_deg: number;
+  hawkes_intensity: number;
+  dispersion_r: number;
+  dominant_driver: string;
+}
+
+export interface EsotericForecastRequest {
+  cadence: 'monthly' | 'weekly';
+  strategy_id: string;
+  base_model_id: string;
+  horizon: number;
+  provision: string;
+  safeguarding_category: string;
+  prediction_interval: number;
+  custom_modules?: string[] | null;
+  scenario?: ScenarioAssumptions;
+}
+
+export interface EsotericForecastResponse {
+  cadence: 'monthly' | 'weekly';
+  period_unit: 'months' | 'weeks';
+  dataset_id: string;
+  is_synthetic: boolean;
+  governance_banner: string;
+  strategy: EsotericStrategyItem;
+  base_model_id: string;
+  base_model_name: string;
+  baseline_sha256: string;
+  active_modules: string[];
+  module_catalog: EsotericModuleCatalogItem[];
+  strategies_catalog: EsotericStrategyItem[];
+  horizon: number;
+  provision: string;
+  safeguarding_category: string;
+  prediction_interval: number;
+  runtime_ms: number;
+  summary: {
+    esoteric_total: number;
+    esoteric_lower: number;
+    esoteric_upper: number;
+    baseline_total: number;
+    baseline_lower: number;
+    baseline_upper: number;
+    prior_horizon_total: number;
+    yoy_change_pct: number;
+    net_esoteric_delta: number;
+    net_esoteric_delta_pct: number;
+    peak_period_label: string;
+    peak_period_count: number;
+    calibration_method: string;
+  };
+  conditioning_diagnostics: {
+    funnel_type: string;
+    n_train_steps: number;
+    n_candidate_esoteric_features: number;
+    n_admitted_esoteric_features: number;
+    n_quarantined_esoteric_features: number;
+    max_vif_after: number;
+    condition_number_after: number;
+    base_nb_dispersion_r: number;
+    identity_floor_active: boolean;
+    admitted_features: EsotericAdmittedFeature[];
+  };
+  walk_forward_backtest: {
+    evaluated_periods: number;
+    folds: number;
+    baseline_mae: number;
+    esoteric_mae: number;
+    mae_delta_pct: number;
+    baseline_rmse: number;
+    esoteric_rmse: number;
+    baseline_wape_pct: number;
+    esoteric_wape_pct: number;
+    baseline_surge_mae: number;
+    esoteric_surge_mae: number;
+    baseline_pi_coverage_pct: number;
+    esoteric_pi_coverage_pct: number;
+    points: {
+      period_label: string;
+      actual: number;
+      baseline: number;
+      esoteric: number;
+    }[];
+  };
+  historical_series: EsotericHistoricalPoint[];
+  forecast_series: EsotericForecastPoint[];
+  mathematical_notes: string[];
+}
+

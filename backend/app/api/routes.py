@@ -289,4 +289,57 @@ def get_esoteric_telemetry(
     )
 
 
+class EsotericForecastRequest(BaseModel):
+    cadence: str = "monthly"
+    strategy_id: str = "staged_core_4"
+    base_model_id: str = "lightgbm_mlforecast"
+    horizon: int = 12
+    provision: str = "All"
+    safeguarding_category: str = "All"
+    prediction_interval: int = 80
+    custom_modules: Optional[list[str]] = None
+    scenario: Optional[Dict[str, Any]] = None
+
+
+@router.post("/esoteric-forecast")
+def create_esoteric_forecast(req: EsotericForecastRequest) -> Dict[str, Any]:
+    """
+    Generate causal multi-step time-series forecasts integrating the 13-framework esoteric
+    mathematical suite (Rough Path Signatures, Warped Hilbert Phase, Causal MODWT Wavelets,
+    Hawkes Contagion, Cellular Sheaves, Optimal Transport, Fisher-Rao NGBoost, etc.)
+    alongside locked pure-baseline control trajectories and walk-forward validation.
+    """
+    from pathlib import Path
+    import sys
+
+    from app.schemas.models import ScenarioAssumptions
+
+    repo_root = str(Path(__file__).resolve().parent.parent.parent.parent)
+    if repo_root not in sys.path:
+        sys.path.insert(0, repo_root)
+
+    from esoteric_math.forecasting import esoteric_forecast_engine
+
+    scen = ScenarioAssumptions(**req.scenario) if req.scenario else ScenarioAssumptions()
+    cad: Any = "weekly" if str(req.cadence).lower() == "weekly" else "monthly"
+
+    try:
+        return esoteric_forecast_engine.generate_esoteric_forecast(
+            cadence=cad,
+            strategy_id=req.strategy_id,
+            base_model_id=req.base_model_id,
+            horizon=req.horizon,
+            provision=req.provision,
+            safeguarding_category=req.safeguarding_category,
+            prediction_interval=req.prediction_interval,
+            custom_modules=req.custom_modules,
+            scenario=scen,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Esoteric forecasting engine error: {exc}") from exc
+
+
+
 
