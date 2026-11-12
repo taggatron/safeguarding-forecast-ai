@@ -255,10 +255,21 @@ def get_esoteric_telemetry(
     t: Optional[str] = Query(default=None, description="Causal evaluation ISO date YYYY-MM-DD (masks s > t)"),
     step_index: Optional[int] = Query(default=None, ge=10, description="Optional causal step index"),
     provision: str = Query(default="All", description="Provision filter (All, EPYP, Adult, Apprenticeships)"),
+    retro_mode: str = Query(
+        default="STAGED_CORE_4",
+        description="Retrospective rollout mode: TELEMETRY_ONLY, STAGED_CORE_4, or FULL_13_GATED",
+    ),
+    lag_buffer_days: int = Query(
+        default=0,
+        ge=0,
+        le=14,
+        description="Single-timestamp reporting-lag sensitivity buffer in days (e.g. 0, 2, 5)",
+    ),
 ) -> Dict[str, Any]:
     """
-    Serve strictly causal Mathematical Early-Warning Telemetry JSON payload
-    (Hilbert Stress-Cycle Phase Clock, Hawkes Contagion Cascade, and Sheaf Frustration Triage).
+    Serve strictly causal Mathematical Early-Warning Telemetry & Retrospective Residual Overlay JSON
+    (Hilbert Stress-Cycle Phase Clock, Hawkes Contagion Cascade, Sheaf Frustration Triage,
+    Frozen Baseline vs. Esoteric Residual Adjustment Overlay, and Backfill Audit Accordion).
     """
     from pathlib import Path
     import sys
@@ -267,12 +278,14 @@ def get_esoteric_telemetry(
     if repo_root not in sys.path:
         sys.path.insert(0, repo_root)
 
-    from esoteric_math.viz.host_mount import telemetry_host_adapter
+    from esoteric_math.retrospective.replay_telemetry_bus import replay_telemetry_bus
 
-    return telemetry_host_adapter.get_telemetry_response(
+    return replay_telemetry_bus.get_replay_response(
         t_date=t,
         t_index=step_index,
         provision=provision,
+        retro_mode=retro_mode,
+        lag_buffer_days=lag_buffer_days,
     )
 
 

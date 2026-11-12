@@ -61,13 +61,17 @@ def _validate_telemetry_invariants(payload: dict) -> None:
         assert np.isfinite(edge["frustration_norm"]) and edge["frustration_norm"] >= 0.0
     assert 1 <= len(sf["triage_cards"]) <= 3
 
-    # 4. Valid standalone SVG strings
+    # 4. Valid standalone SVG strings (must parse cleanly as strict XML)
+    import xml.etree.ElementTree as ET
+
     for svg_str in (
         render_hilbert_clock_svg(hc),
         render_hawkes_cascade_svg(hk),
         render_sheaf_frustration_svg(sf),
     ):
         assert svg_str.startswith("<svg") and svg_str.strip().endswith("</svg>")
+        root = ET.fromstring(svg_str)
+        assert root.tag.endswith("svg")
 
 
 def test_full_telemetry_builders_and_zero_referral_holiday_blocks() -> None:
@@ -108,3 +112,25 @@ def test_single_category_and_flat_latent_graph_fallback() -> None:
     assert payload["topology_mode"] == "Latent Feature/Regime Graph"
     assert payload["sheaf_frustration"]["topology_mode"] == "Latent Feature/Regime Graph"
     assert payload["hawkes_cascade"]["is_univariate_fallback"] is True
+
+
+def test_fastapi_esoteric_telemetry_endpoint_and_holiday_freeze() -> None:
+    """Verify non-breaking FastAPI route `/api/esoteric-telemetry` serves valid causal payloads."""
+    from fastapi.testclient import TestClient
+    from app.main import app
+
+    client = TestClient(app)
+    resp_latest = client.get("/api/esoteric-telemetry", params={"provision": "All"})
+    assert resp_latest.status_code == 200
+    body = resp_latest.json()
+    assert "scrubber" in body and "telemetry" in body
+    _validate_telemetry_invariants(body["telemetry"])
+
+    # Verify Autumn Half-Term Freeze landmark sets is_holiday_freeze=True
+    resp_freeze = client.get("/api/esoteric-telemetry", params={"t": "2024-10-29", "provision": "All"})
+    assert resp_freeze.status_code == 200
+    body_freeze = resp_freeze.json()
+    assert body_freeze["telemetry"]["selected_date"] == "2024-10-29"
+    assert body_freeze["telemetry"]["hilbert_clock"]["current"]["is_holiday_freeze"] is True
+    _validate_telemetry_invariants(body_freeze["telemetry"])
+

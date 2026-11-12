@@ -223,8 +223,17 @@ export const apiClient = {
     );
   },
 
-  getEsotericTelemetry(targetDate?: string, provision = 'All'): Promise<any> {
-    const params = new URLSearchParams({ provision });
+  getEsotericTelemetry(
+    targetDate?: string,
+    provision = 'All',
+    retroMode = 'STAGED_CORE_4',
+    lagBufferDays = 0
+  ): Promise<any> {
+    const params = new URLSearchParams({
+      provision,
+      retro_mode: retroMode,
+      lag_buffer_days: String(lagBufferDays),
+    });
     if (targetDate) {
       params.set('t', targetDate);
     }

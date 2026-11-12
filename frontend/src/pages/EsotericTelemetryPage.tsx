@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import {
   Activity,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
+  ChevronUp,
   Compass,
   GitBranch,
   Layers,
+  Lock,
   ShieldAlert,
   Sparkles,
   Calendar,
@@ -32,6 +35,10 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
 }) => {
   const [data, setData] = useState<any | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [retroMode, setRetroMode] = useState<string>('STAGED_CORE_4');
+  const [lagBufferDays, setLagBufferDays] = useState<number>(0);
+  const [showResidualOverlay, setShowResidualOverlay] = useState<boolean>(true);
+  const [isAuditOpen, setIsAuditOpen] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -39,13 +46,24 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
   const [hoveredSparkIdx, setHoveredSparkIdx] = useState<number | null>(null);
   const [hoveredHawkesIdx, setHoveredHawkesIdx] = useState<number | null>(null);
   const [hoveredSheafNode, setHoveredSheafNode] = useState<number | null>(null);
+  const [hoveredOverlayIdx, setHoveredOverlayIdx] = useState<number | null>(null);
 
   const loadTelemetry = useCallback(
-    async (targetDate: string | null, provision: string) => {
+    async (
+      targetDate: string | null,
+      provision: string,
+      mode: string,
+      lagDays: number
+    ) => {
       setIsLoading(true);
       setError(null);
       try {
-        const res = await apiClient.getEsotericTelemetry(targetDate || undefined, provision);
+        const res = await apiClient.getEsotericTelemetry(
+          targetDate || undefined,
+          provision,
+          mode,
+          lagDays
+        );
         setData(res);
         if (!targetDate && res?.telemetry?.selected_date) {
           setSelectedDate(res.telemetry.selected_date);
@@ -60,19 +78,23 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
   );
 
   useEffect(() => {
-    loadTelemetry(selectedDate, selectedProvision);
-  }, [selectedDate, selectedProvision, loadTelemetry]);
+    loadTelemetry(selectedDate, selectedProvision, retroMode, lagBufferDays);
+  }, [selectedDate, selectedProvision, retroMode, lagBufferDays, loadTelemetry]);
 
   const scrubber = data?.scrubber;
   const telemetry = data?.telemetry;
+  const retroOverlay = data?.retrospective_overlay;
+  const backfillAudit = data?.backfill_audit;
   const availableDates: string[] = scrubber?.available_dates || [];
   const minStep: number = scrubber?.min_step_index ?? 30;
   const maxStep: number = scrubber?.max_step_index ?? Math.max(30, availableDates.length - 1);
 
   const activeStepIndex = useMemo(() => {
     if (!telemetry) return maxStep;
+    const byDateIdx = availableDates.indexOf(telemetry.selected_date);
+    if (byDateIdx >= 0) return byDateIdx;
     return telemetry.selected_step_index ?? maxStep;
-  }, [telemetry, maxStep]);
+  }, [telemetry, availableDates, maxStep]);
 
   const handleSliderChange = (stepIdx: number) => {
     const clamped = Math.max(minStep, Math.min(maxStep, stepIdx));
@@ -98,7 +120,11 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
       <Card className="border-rose-300 bg-rose-50/50">
         <CardContent className="p-6 text-sm text-rose-900 flex items-center justify-between">
           <span>{error || 'Telemetry payload unavailable.'}</span>
-          <Button size="sm" variant="danger" onClick={() => loadTelemetry(selectedDate, selectedProvision)}>
+          <Button
+            size="sm"
+            variant="danger"
+            onClick={() => loadTelemetry(selectedDate, selectedProvision, retroMode, lagBufferDays)}
+          >
             Retry
           </Button>
         </CardContent>
@@ -207,21 +233,40 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <label htmlFor="telemetry-provision" className="text-xs font-semibold text-slate-600">
-            Cohort Scope:
-          </label>
-          <select
-            id="telemetry-provision"
-            value={selectedProvision}
-            onChange={(e) => onSelectProvision(e.target.value)}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs focus:border-teal-500 focus:outline-none"
-          >
-            <option value="All">Whole College (All Provisions)</option>
-            <option value="EPYP">16–18 Study Programmes &amp; EPYP</option>
-            <option value="Adult">19+ Adult Provision</option>
-            <option value="Apprenticeships">Apprenticeships</option>
-          </select>
+        <div className="flex flex-wrap items-center gap-3">
+          <div className="flex items-center gap-1.5">
+            <label htmlFor="retro-mode-select" className="text-xs font-semibold text-slate-600">
+              Rollout Mode:
+            </label>
+            <select
+              id="retro-mode-select"
+              data-testid="retro-mode-select"
+              value={retroMode}
+              onChange={(e) => setRetroMode(e.target.value)}
+              className="rounded-xl border border-teal-300 bg-teal-50/70 px-3 py-1.5 text-xs font-bold text-slate-900 shadow-2xs focus:border-teal-600 focus:outline-none"
+            >
+              <option value="STAGED_CORE_4">STAGED_CORE_4 (Default High-Evidence Stack)</option>
+              <option value="TELEMETRY_ONLY">TELEMETRY_ONLY (Zero Forecast Change)</option>
+              <option value="FULL_13_GATED">FULL_13_GATED (13-Module 1-SE Quarantine)</option>
+            </select>
+          </div>
+
+          <div className="flex items-center gap-1.5">
+            <label htmlFor="telemetry-provision" className="text-xs font-semibold text-slate-600">
+              Cohort Scope:
+            </label>
+            <select
+              id="telemetry-provision"
+              value={selectedProvision}
+              onChange={(e) => onSelectProvision(e.target.value)}
+              className="rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-semibold text-slate-800 shadow-2xs focus:border-teal-500 focus:outline-none"
+            >
+              <option value="All">Whole College (All Provisions)</option>
+              <option value="EPYP">16–18 Study Programmes &amp; EPYP</option>
+              <option value="Adult">19+ Adult Provision</option>
+              <option value="Apprenticeships">Apprenticeships</option>
+            </select>
+          </div>
         </div>
       </div>
 
@@ -354,6 +399,237 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
         </CardContent>
       </Card>
 
+      {/* RETROSPECTIVE OVERLAY TOGGLE: FROZEN BASELINE VS. ESOTERIC RESIDUAL ADJUSTMENT */}
+      {retroOverlay && (
+        <Card
+          className="border-slate-200/90 bg-white"
+          data-testid="retrospective-overlay-panel"
+        >
+          <CardContent className="p-4 space-y-3">
+            <div className="flex flex-col gap-2.5 lg:flex-row lg:items-center lg:justify-between">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <Lock className="h-4 w-4 text-teal-700" />
+                <span className="text-sm font-extrabold text-slate-900">
+                  Post-Hoc Residual Stacking Overlay
+                </span>
+                <Badge variant={retroOverlay.identity_floor_active ? 'slate' : 'teal'}>
+                  {retroOverlay.retro_mode}
+                </Badge>
+                <span
+                  data-testid="retrospective-attribution-badge"
+                  className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${
+                    retroOverlay.identity_floor_active ||
+                    Math.abs(Number(retroOverlay.current_step?.delta_pct || 0)) < 0.05
+                      ? 'bg-slate-100 text-slate-700'
+                      : Number(retroOverlay.current_step?.delta_pct || 0) > 0
+                      ? 'bg-amber-100 text-amber-900'
+                      : 'bg-teal-100 text-teal-900'
+                  }`}
+                >
+                  {retroOverlay.current_step?.attribution || '0.0% — Frozen Baseline Retained'}
+                </span>
+              </div>
+
+              <label
+                htmlFor="retro-overlay-checkbox"
+                className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 px-3 py-1.5 text-xs font-bold text-slate-800 cursor-pointer select-none hover:bg-slate-100"
+              >
+                <input
+                  id="retro-overlay-checkbox"
+                  data-testid="retrospective-overlay-toggle"
+                  type="checkbox"
+                  checked={showResidualOverlay}
+                  onChange={(e) => setShowResidualOverlay(e.target.checked)}
+                  className="h-4 w-4 rounded border-slate-300 accent-teal-600 cursor-pointer"
+                />
+                <span>Show Frozen Baseline vs. Esoteric Residual Adjustment</span>
+              </label>
+            </div>
+
+            {showResidualOverlay && (() => {
+              const ovPts: any[] = retroOverlay.series || [];
+              if (ovPts.length === 0) return null;
+              const activeOv =
+                hoveredOverlayIdx !== null && ovPts[hoveredOverlayIdx]
+                  ? ovPts[hoveredOverlayIdx]
+                  : retroOverlay.current_step || ovPts[ovPts.length - 1];
+
+              const ow = 940;
+              const oh = 152;
+              const ox0 = 46;
+              const ox1 = 918;
+              const oy0 = 16;
+              const oy1 = 128;
+              const maxY =
+                Math.max(
+                  4.0,
+                  ...ovPts.map((p) =>
+                    Math.max(
+                      Number(p.observed_count || 0),
+                      Number(p.frozen_baseline_mu || 0),
+                      Number(p.adjusted_final_mu || 0),
+                      Number(p.upper_95_adjusted || 0) * 0.65
+                    )
+                  )
+                ) * 1.16;
+
+              const ox = (i: number) =>
+                ox0 + ((ox1 - ox0) * i) / Math.max(1, ovPts.length - 1);
+              const oy = (v: number) => oy1 - ((oy1 - oy0) * Math.min(maxY, Math.max(0, v))) / maxY;
+
+              const frozenLine = ovPts
+                .map((p, i) => `${ox(i).toFixed(1)},${oy(p.frozen_baseline_mu).toFixed(1)}`)
+                .join(' ');
+              const adjLine = ovPts
+                .map((p, i) => `${ox(i).toFixed(1)},${oy(p.adjusted_final_mu).toFixed(1)}`)
+                .join(' ');
+              const deltaBandPoly = [
+                ...ovPts.map((p, i) => `${ox(i).toFixed(1)},${oy(p.adjusted_final_mu).toFixed(1)}`),
+                ...ovPts
+                  .map((p, i) => `${ox(i).toFixed(1)},${oy(p.frozen_baseline_mu).toFixed(1)}`)
+                  .reverse(),
+              ].join(' ');
+              const cutoffIdx = ovPts.findIndex((p) => p.is_projection);
+              const splitIdx = cutoffIdx >= 0 ? Math.max(0, cutoffIdx - 1) : ovPts.length - 1;
+
+              return (
+                <div
+                  className="rounded-xl border border-slate-200 bg-slate-50/50 p-3 space-y-2"
+                  data-testid="retrospective-overlay-chart"
+                >
+                  <div className="flex flex-wrap items-center justify-between gap-2 text-xs text-slate-700">
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="font-mono font-bold text-slate-900">{activeOv.date}</span>
+                      <span>
+                        Frozen Baseline μ_base:{' '}
+                        <strong>{Number(activeOv.frozen_baseline_mu).toFixed(2)}</strong>
+                      </span>
+                      <span>
+                        Post-Hoc Adjusted μ_final:{' '}
+                        <strong className="text-teal-700">
+                          {Number(activeOv.adjusted_final_mu).toFixed(2)}
+                        </strong>
+                      </span>
+                      <span>
+                        95% PI: [<strong>{activeOv.lower_95_adjusted}</strong>,{' '}
+                        <strong>{activeOv.upper_95_adjusted}</strong>]
+                      </span>
+                    </div>
+                    <span className="font-semibold text-slate-800">{activeOv.attribution}</span>
+                  </div>
+
+                  <svg
+                    viewBox={`0 0 ${ow} ${oh}`}
+                    className="w-full select-none"
+                    onMouseLeave={() => setHoveredOverlayIdx(null)}
+                  >
+                    {/* Translucent Residual Delta Band between Frozen Baseline and Adjusted Expectation */}
+                    <polygon
+                      points={deltaBandPoly}
+                      fill={retroOverlay.identity_floor_active ? '#94A3B8' : '#0D9488'}
+                      fillOpacity={retroOverlay.identity_floor_active ? '0.08' : '0.24'}
+                    />
+
+                    {/* Causal Cutoff Vertical Marker */}
+                    <line
+                      x1={ox(splitIdx)}
+                      y1={oy0}
+                      x2={ox(splitIdx)}
+                      y2={oy1}
+                      stroke="#0F172A"
+                      strokeWidth="1.2"
+                      strokeDasharray="4,3"
+                    />
+
+                    {/* Frozen Baseline Curve (100% Immutable SHA-256) */}
+                    <polyline
+                      fill="none"
+                      stroke="#475569"
+                      strokeWidth="1.9"
+                      strokeDasharray="5,3"
+                      points={frozenLine}
+                    />
+
+                    {/* Post-Hoc Esoteric Adjusted Curve */}
+                    <polyline
+                      fill="none"
+                      stroke="#0D9488"
+                      strokeWidth="2.3"
+                      points={adjLine}
+                    />
+
+                    {/* Observed Historical Counts ( strictly <= t ) */}
+                    {ovPts.map((p, i) => {
+                      if (p.is_projection || p.observed_count === null) return null;
+                      return (
+                        <circle
+                          key={`ov-obs-${p.date}`}
+                          cx={ox(i)}
+                          cy={oy(p.observed_count)}
+                          r="2.4"
+                          fill="#0F172A"
+                        />
+                      );
+                    })}
+
+                    {/* Hover Columns */}
+                    {ovPts.map((p, i) => {
+                      const colW = (ox1 - ox0) / Math.max(1, ovPts.length);
+                      return (
+                        <rect
+                          key={`ov-hov-${i}`}
+                          x={ox(i) - colW * 0.5}
+                          y={oy0}
+                          width={colW}
+                          height={oy1 - oy0}
+                          fill="transparent"
+                          onMouseEnter={() => setHoveredOverlayIdx(i)}
+                          className="cursor-crosshair"
+                        />
+                      );
+                    })}
+
+                    <line x1={ox0} y1={oy1} x2={ox1} y2={oy1} stroke="#CBD5E1" strokeWidth="1" />
+                    <text x={ox0} y={144} fontSize="9.5" fill="#64748B">
+                      {ovPts[0]?.date}
+                    </text>
+                    <text
+                      x={ox(splitIdx) - 7}
+                      y={oy0 + 9}
+                      textAnchor="end"
+                      fontSize="9.5"
+                      fontWeight="700"
+                      fill="#0F172A"
+                    >
+                      Cutoff t = {ovPts[splitIdx]?.date}
+                    </text>
+                    <text x={ox1} y={144} textAnchor="end" fontSize="9.5" fill="#0F766E">
+                      +5d Causal Horizon ({ovPts[ovPts.length - 1]?.date})
+                    </text>
+                  </svg>
+
+                  <div className="flex flex-wrap items-center gap-4 text-[11px] text-slate-600">
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-0.5 w-4 border-b-2 border-dashed border-slate-600 inline-block" />{' '}
+                      Frozen Baseline μ_base (SHA-256 Locked)
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-0.5 w-4 bg-teal-600 inline-block" /> Post-Hoc Esoteric Adjusted μ_final
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-2.5 w-3 rounded-xs bg-teal-600/25 inline-block" /> Esoteric Residual Delta Band
+                    </span>
+                    <span className="inline-flex items-center gap-1.5">
+                      <span className="h-2 w-2 rounded-full bg-slate-900 inline-block" /> Observed Daily Count (≤ t)
+                    </span>
+                  </div>
+                </div>
+              );
+            })()}
+          </CardContent>
+        </Card>
+      )}
+
       {/* VISUAL SPEC 1: HILBERT STRESS-CYCLE PHASE CLOCK */}
       <Card className="scroll-mt-24" data-testid="hilbert-phase-clock-panel">
         <CardHeader className="pb-2">
@@ -455,34 +731,6 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                   strokeWidth="1.6"
                   strokeDasharray="5,4"
                 />
-
-                {/* Ring Labels */}
-                <text
-                  x={dialCx + 5}
-                  y={dialCy - 1.0 * dialScale + 12}
-                  fontSize="9.5"
-                  fontWeight="600"
-                  fill="#475569"
-                  paintOrder="stroke"
-                  stroke="#FFFFFF"
-                  strokeWidth="3.5"
-                  strokeLinejoin="round"
-                >
-                  1.0σ Normal
-                </text>
-                <text
-                  x={dialCx + 5}
-                  y={dialCy - 2.0 * dialScale - 4}
-                  fontSize="9.5"
-                  fontWeight="700"
-                  fill="#DC2626"
-                  paintOrder="stroke"
-                  stroke="#FFFFFF"
-                  strokeWidth="3.5"
-                  strokeLinejoin="round"
-                >
-                  2.0σ Breach
-                </text>
 
                 {/* Non-overlapping Quadrant Corner Headers */}
                 <text
@@ -605,6 +853,34 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                     })()}
                   </g>
                 )}
+
+                {/* Ring Labels (rendered on top with white halo for 100% legibility) */}
+                <text
+                  x={dialCx + 5}
+                  y={dialCy - 1.0 * dialScale + 12}
+                  fontSize="9.5"
+                  fontWeight="600"
+                  fill="#475569"
+                  paintOrder="stroke"
+                  stroke="#FFFFFF"
+                  strokeWidth="3.5"
+                  strokeLinejoin="round"
+                >
+                  1.0σ Normal
+                </text>
+                <text
+                  x={dialCx + 5}
+                  y={dialCy - 2.0 * dialScale - 4}
+                  fontSize="9.5"
+                  fontWeight="700"
+                  fill="#DC2626"
+                  paintOrder="stroke"
+                  stroke="#FFFFFF"
+                  strokeWidth="3.5"
+                  strokeLinejoin="round"
+                >
+                  2.0σ Breach
+                </text>
               </svg>
             </div>
 
@@ -876,8 +1152,8 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                               strokeDasharray="4,3"
                             />
                             <text
-                              x={hx1 - 2}
-                              y={hy0 + 12}
+                              x={hx1}
+                              y={15}
                               textAnchor="end"
                               fontSize="9.5"
                               fontWeight="700"
@@ -1291,6 +1567,8 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                           const y2 = gcy + v.y_unit * gr;
                           const mx = 0.5 * (x1 + x2);
                           const my = 0.5 * (y1 + y2);
+                          const px = 0.68 * mx + 0.32 * gcx;
+                          const py = 0.68 * my + 0.32 * gcy;
                           return (
                             <g key={`se-edge-${edge.edge_index}`}>
                               <line
@@ -1309,16 +1587,16 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                               {edge.is_frustrated && (
                                 <g>
                                   <rect
-                                    x={mx - 19}
-                                    y={my - 8.5}
+                                    x={px - 19}
+                                    y={py - 8.5}
                                     width="38"
                                     height="17"
                                     rx="8.5"
                                     fill={edge.color}
                                   />
                                   <text
-                                    x={mx}
-                                    y={my + 3}
+                                    x={px}
+                                    y={py + 3}
                                     textAnchor="middle"
                                     fontSize="9"
                                     fontWeight="700"
@@ -1340,7 +1618,7 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
                         const ny = gcy + nd.y_unit * gr;
                         const isHov = hoveredSheafNode === nd.index;
                         const labelOffset =
-                          nd.y_unit < -0.25 ? -(nd.radius_px + 9) : nd.radius_px + 15;
+                          nd.y_unit < -0.65 ? -(nd.radius_px + 10) : nd.radius_px + 15;
                         return (
                           <g
                             key={nd.id}
@@ -1486,6 +1764,193 @@ export const EsotericTelemetryPage: React.FC<EsotericTelemetryPageProps> = ({
           </div>
         </CardContent>
       </Card>
+
+      {/* COLLAPSED BACKFILL AUDIT ACCORDION (Bottom Governance & Causality Ledger) */}
+      {backfillAudit && (
+        <Card
+          className="border-slate-200/90 bg-white"
+          data-testid="backfill-audit-accordion"
+        >
+          <button
+            type="button"
+            data-testid="backfill-audit-toggle"
+            aria-expanded={isAuditOpen}
+            onClick={() => setIsAuditOpen((prev) => !prev)}
+            className="flex w-full items-center justify-between gap-3 px-5 py-3.5 text-left hover:bg-slate-50/80 transition-colors cursor-pointer rounded-2xl"
+          >
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Lock className="h-4 w-4 text-slate-700" />
+              <span className="font-display text-sm font-extrabold text-slate-900">
+                Retrospective Backfill, Quarantine Gate &amp; Vintage Causality Audit
+              </span>
+              <Badge variant="teal">
+                {backfillAudit.rollout_badge?.retro_mode || retroMode}
+              </Badge>
+              <Badge variant="slate">
+                SHA-256 Baseline Verified
+              </Badge>
+              <span className="text-xs text-slate-500">
+                Last Sept Reset:{' '}
+                <strong>{backfillAudit.vintage_and_topology?.last_september_reset_date}</strong> (
+                {backfillAudit.vintage_and_topology?.active_academic_year})
+              </span>
+            </div>
+            <div className="flex items-center gap-1 text-xs font-semibold text-slate-600">
+              <span>{isAuditOpen ? 'Collapse Audit' : 'Expand Audit'}</span>
+              {isAuditOpen ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <ChevronDown className="h-4 w-4" />
+              )}
+            </div>
+          </button>
+
+          {isAuditOpen && (
+            <CardContent
+              className="border-t border-slate-200 pt-4 pb-5 space-y-4"
+              data-testid="backfill-audit-content"
+            >
+              <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+                {/* 1. Rollout Mode & Cryptographic Frozen Baseline Proof */}
+                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-2 text-xs">
+                  <div className="font-bold uppercase tracking-wider text-[11px] text-slate-500">
+                    1. Rollout Mode &amp; Immutable Baseline Hash
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="font-bold text-slate-900">
+                      {backfillAudit.rollout_badge?.retro_mode}
+                    </span>
+                    <Badge variant="teal">Zero Core Mutation</Badge>
+                  </div>
+                  <p className="text-slate-600 leading-relaxed">
+                    {backfillAudit.rollout_badge?.description}
+                  </p>
+                  <div className="space-y-1 border-t border-slate-200/80 pt-2 font-mono text-[10.5px] text-slate-700">
+                    <div>
+                      Model SHA-256:{' '}
+                      <span title={backfillAudit.rollout_badge?.baseline_model_sha256}>
+                        {String(backfillAudit.rollout_badge?.baseline_model_sha256 || '').slice(0, 18)}…
+                      </span>
+                    </div>
+                    <div>
+                      OOS Pred SHA-256:{' '}
+                      <span title={backfillAudit.rollout_badge?.baseline_prediction_sha256}>
+                        {String(backfillAudit.rollout_badge?.baseline_prediction_sha256 || '').slice(0, 18)}…
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* 2. Admitted vs. Quarantined Residual Modules per Academic Year */}
+                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-2 text-xs">
+                  <div className="font-bold uppercase tracking-wider text-[11px] text-slate-500">
+                    2. Admitted vs. Quarantined Modules by Academic Year
+                  </div>
+                  <div className="space-y-2">
+                    {(backfillAudit.admitted_vs_quarantined_by_year || []).map((yr: any) => (
+                      <div
+                        key={yr.academic_year}
+                        className="rounded-lg border border-slate-200 bg-white p-2.5 space-y-1"
+                      >
+                        <div className="flex items-center justify-between font-bold text-slate-900">
+                          <span>AY {yr.academic_year}</span>
+                          <span className="text-[10.5px] font-normal text-slate-500">
+                            VIF ≤ {yr.max_vif} · Quarantined: {yr.quarantined_count}
+                          </span>
+                        </div>
+                        {yr.admitted_modules?.length > 0 ? (
+                          <div className="flex flex-wrap gap-1">
+                            {yr.admitted_labels.map((lbl: string) => (
+                              <span
+                                key={lbl}
+                                className="rounded-md bg-teal-50 px-1.5 py-0.5 text-[10.5px] font-semibold text-teal-800 border border-teal-200"
+                              >
+                                Admitted: {lbl}
+                              </span>
+                            ))}
+                          </div>
+                        ) : (
+                          <div className="text-[11px] font-semibold text-slate-600">
+                            Identity Floor Active (0 modules admitted — Frozen Baseline verbatim)
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* 3. Vintage Cutoff, September Topology Reset & Reporting-Lag Sensitivity */}
+                <div className="rounded-xl border border-slate-200 bg-slate-50/70 p-3.5 space-y-2 text-xs">
+                  <div className="font-bold uppercase tracking-wider text-[11px] text-slate-500">
+                    3. Vintage Cutoff &amp; September Topology Reset
+                  </div>
+                  <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+                    <div>
+                      <span className="text-slate-500">Vintage Cutoff:</span>{' '}
+                      <strong className="font-mono text-slate-900">
+                        {backfillAudit.vintage_and_topology?.vintage_cutoff_date}
+                      </strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">Last Sept Reset:</span>{' '}
+                      <strong className="font-mono text-slate-900">
+                        {backfillAudit.vintage_and_topology?.last_september_reset_date}
+                      </strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">Acad Year Week:</span>{' '}
+                      <strong>Wk {backfillAudit.vintage_and_topology?.weeks_into_academic_year}</strong>
+                    </div>
+                    <div>
+                      <span className="text-slate-500">Prior Warmup w:</span>{' '}
+                      <strong>
+                        {backfillAudit.vintage_and_topology?.warmup_prior_active
+                          ? `${backfillAudit.vintage_and_topology?.warmup_prior_weight} (Active)`
+                          : '0.0 (Pure AY)'}
+                      </strong>
+                    </div>
+                  </div>
+
+                  {/* Configurable Reporting-Lag Sensitivity Buffer (0d / 2d / 5d) */}
+                  <div className="border-t border-slate-200/80 pt-2 space-y-1.5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[11px] font-semibold text-slate-700">
+                        Reporting-Lag Buffer Sensitivity:
+                      </span>
+                      <div className="flex items-center gap-1">
+                        {[0, 2, 5].map((bDay) => (
+                          <button
+                            key={bDay}
+                            type="button"
+                            onClick={() => setLagBufferDays(bDay)}
+                            className={`rounded-md px-2 py-0.5 text-[10.5px] font-bold cursor-pointer ${
+                              lagBufferDays === bDay
+                                ? 'bg-slate-900 text-white'
+                                : 'bg-white border border-slate-300 text-slate-700 hover:bg-slate-100'
+                            }`}
+                          >
+                            {bDay}d
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="space-y-0.5 text-[10.5px] text-slate-600 font-mono">
+                      {(backfillAudit.reporting_lag_sensitivity || []).map((row: any) => (
+                        <div key={row.lag_buffer_days} className="flex justify-between">
+                          <span>Lag B={row.lag_buffer_days}d ({row.hilbert_quadrant}):</span>
+                          <span>
+                            Crest {row.days_to_crest}d · λ={row.hawkes_lambda_total} · E_F={row.sheaf_dirichlet_energy}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          )}
+        </Card>
+      )}
     </div>
   );
 };
