@@ -92,7 +92,7 @@ class EsotericFeatureSuite(BaseEstimator, TransformerMixin):
             self.module_columns_[mod_id] = list(df_block.columns)
             self.diagnostics_[mod_id] = getattr(eng, "last_diagnostics_", {})
 
-        out = pd.concat(blocks, axis=1)
+        out = pd.concat(blocks, axis=1) if blocks else pd.DataFrame(index=X.index)
         self.feature_names_out_ = list(out.columns)
         self.last_bundle_ = bundle
         return out

@@ -4,6 +4,8 @@ import type {
   BacktestResponse,
   DatasetSummaryResponse,
   DataValidationReport,
+  EsotericForecastRequest,
+  EsotericForecastResponse,
   ForecastRequest,
   ForecastResponse,
   HistoricalStatsResponse,
@@ -241,6 +243,18 @@ export const apiClient = {
       `${API_BASE}/esoteric-telemetry?${params.toString()}`,
       undefined,
       () => esotericTelemetrySnapshot
+    );
+  },
+
+  generateEsotericForecast(req: EsotericForecastRequest): Promise<EsotericForecastResponse> {
+    return fetchWithFallback(
+      `${API_BASE}/esoteric-forecast`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(req),
+      },
+      () => vercelFallbackEngine.generateEsotericForecast(req)
     );
   },
 };

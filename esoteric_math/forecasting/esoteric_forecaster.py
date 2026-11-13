@@ -574,12 +574,10 @@ class EsotericForecastEngine:
         strat_meta = next((s for s in ESOTERIC_STRATEGIES if s["id"] == strategy_id), ESOTERIC_STRATEGIES[0])
         strategy_id = strat_meta["id"]
 
-        if custom_modules is not None and len(custom_modules) > 0:
+        if custom_modules is not None:
             active_mods = tuple(
                 m for m in custom_modules if m in FEATURE_ENGINE_REGISTRY
             )
-            if not active_mods:
-                active_mods = tuple(strat_meta["default_modules"])
         else:
             active_mods = tuple(strat_meta["default_modules"])
 

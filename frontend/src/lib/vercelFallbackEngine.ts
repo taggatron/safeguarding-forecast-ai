@@ -1,8 +1,13 @@
 import rawSnapshot from './precomputedSnapshot.json';
+import rawEsotericForecastSnapshot from './esotericForecastSnapshot.json';
 import type {
   BacktestResponse,
   DatasetSummaryResponse,
   DataValidationReport,
+  EsotericAdmittedFeature,
+  EsotericForecastPoint,
+  EsotericForecastRequest,
+  EsotericForecastResponse,
   ForecastRequest,
   ForecastResponse,
   HistoricalStatsResponse,
@@ -12,6 +17,7 @@ import type {
 } from '../types/api';
 
 const snapshot = rawSnapshot as any;
+const esoForecastSnapshot = rawEsotericForecastSnapshot as any;
 
 // Runtime state when operating in serverless/static edge mode on Vercel
 let activeDatasetSummary: DatasetSummaryResponse = structuredClone(snapshot.dataset_summary);
@@ -543,6 +549,299 @@ export const vercelFallbackEngine = {
 
   getRecentForecastRuns(): { runs: any[] } {
     return { runs: snapshot.recent_runs || [] };
+  },
+
+  generateEsotericForecast(req: EsotericForecastRequest): EsotericForecastResponse {
+    const cadence = req.cadence === 'weekly' ? 'weekly' : 'monthly';
+    const stratId =
+      req.strategy_id &&
+      ['staged_core_4', 'rough_signatures_focus', 'fisher_rao_ngboost', 'full_13_conditioned'].includes(
+        req.strategy_id
+      )
+        ? req.strategy_id
+        : 'staged_core_4';
+
+    const validMonthlyModels = ['lightgbm_mlforecast', 'statistical_count', 'seasonal_naive'];
+    const validWeeklyModels = ['tweedie_lgbm', 'nb2_glm', 'zinb_model'];
+    const effBaseModel =
+      cadence === 'weekly'
+        ? validWeeklyModels.includes(req.base_model_id)
+          ? req.base_model_id
+          : 'tweedie_lgbm'
+        : validMonthlyModels.includes(req.base_model_id)
+          ? req.base_model_id
+          : 'lightgbm_mlforecast';
+
+    const baseRun: EsotericForecastResponse = structuredClone(
+      esoForecastSnapshot[cadence]?.[effBaseModel]?.[stratId] ||
+        esoForecastSnapshot[cadence]?.[effBaseModel]?.['staged_core_4']
+    );
+    const fullRun: EsotericForecastResponse | undefined =
+      esoForecastSnapshot[cadence]?.[effBaseModel]?.['full_13_conditioned'];
+
+    const maxH = cadence === 'weekly' ? 26 : 12;
+    const allowedHorizons = cadence === 'weekly' ? [13, 26] : [3, 6, 12];
+    const effHorizon = allowedHorizons.includes(req.horizon) ? req.horizon : maxH;
+    const piLevel = req.prediction_interval === 95 ? 95 : 80;
+
+    const provision = req.provision || 'All';
+    const category = cadence === 'weekly' ? 'All' : req.safeguarding_category || 'All';
+    const { concernMult, enrolMult } = getSliceMultiplier(provision, category);
+
+    const scen = req.scenario || {
+      enrolment_growth_pct: 0,
+      teaching_days_delta: 0,
+      attendance_rate_delta_pp: 0,
+    };
+    const enrolElast = Math.pow(1 + (scen.enrolment_growth_pct || 0) / 100, 0.85);
+    const tdDenom = cadence === 'weekly' ? 5 : 18;
+    const tdElast = Math.pow(1 + (scen.teaching_days_delta || 0) / tdDenom, 0.35);
+    const attElast = 1 - (scen.attendance_rate_delta_pp || 0) * 0.011;
+    const scenarioMult = Math.max(0.35, enrolElast * tdElast * attElast);
+
+    // Handle interactive custom module subset toggles (`f01`..`f13`)
+    let activeModules = [...baseRun.active_modules];
+    let admittedFeatures: EsotericAdmittedFeature[] = [...baseRun.conditioning_diagnostics.admitted_features];
+    let residualBlend = 1.0;
+    let useFullReference = false;
+    let identityFloor = baseRun.conditioning_diagnostics.identity_floor_active;
+    let nCand = baseRun.conditioning_diagnostics.n_candidate_esoteric_features;
+    let nAdm = baseRun.conditioning_diagnostics.n_admitted_esoteric_features;
+
+    if (Array.isArray(req.custom_modules)) {
+      const validIds = new Set(baseRun.module_catalog.map((m) => m.id));
+      const customClean = req.custom_modules.filter((m) => validIds.has(m));
+      activeModules = customClean;
+
+      if (customClean.length === 0) {
+        admittedFeatures = [];
+        residualBlend = 0.0;
+        identityFloor = true;
+        nCand = 0;
+        nAdm = 0;
+      } else {
+        const defaultSet = new Set(baseRun.active_modules);
+        const isExactDefault =
+          customClean.length === baseRun.active_modules.length &&
+          customClean.every((m) => defaultSet.has(m));
+
+        if (!isExactDefault) {
+          const customSet = new Set(customClean);
+          const hasOutsideDefault = customClean.some((m) => !defaultSet.has(m));
+          const poolSource = hasOutsideDefault && fullRun ? fullRun : baseRun;
+          useFullReference = Boolean(hasOutsideDefault && fullRun);
+
+          const poolFeatures = poolSource.conditioning_diagnostics.admitted_features;
+          const totalPoolWeight = poolFeatures.reduce((acc, f) => acc + Math.abs(f.weight), 0);
+          const filtered = poolFeatures.filter((f) => customSet.has(f.module_id));
+
+          if (filtered.length > 0 && totalPoolWeight > 0) {
+            admittedFeatures = filtered;
+            const keptWeight = filtered.reduce((acc, f) => acc + Math.abs(f.weight), 0);
+            residualBlend = Math.min(1.15, Math.max(0.15, keptWeight / totalPoolWeight));
+          } else {
+            // Synthesize lightweight attribution entries for toggled modules when outside precomputed top-k
+            admittedFeatures = customClean.slice(0, 4).map((mId, idx) => {
+              const catMeta = baseRun.module_catalog.find((c) => c.id === mId);
+              return {
+                feature: `${mId}_causal_manifold_signal`,
+                module_id: mId,
+                module_name: catMeta ? catMeta.name : mId.toUpperCase(),
+                weight: Number((0.045 / (idx + 1)).toFixed(4)),
+                direction: 'surge-amplifying',
+                description: catMeta ? catMeta.role : 'Causal higher-order manifold predictor.',
+              };
+            });
+            residualBlend = Math.min(1.0, Math.max(0.2, customClean.length / Math.max(1, baseRun.active_modules.length)));
+          }
+          nCand = customClean.length * 8;
+          nAdm = admittedFeatures.length;
+          identityFloor = false;
+        }
+      }
+    }
+
+    const refForecastSeries =
+      useFullReference && fullRun ? fullRun.forecast_series : baseRun.forecast_series;
+
+    const histScaled = baseRun.historical_series.map((pt) => {
+      const cnt = Math.max(0, Math.round(pt.actual_count * concernMult));
+      const enrol = Math.max(10, Math.round(pt.enrolled_students * enrolMult));
+      return {
+        ...pt,
+        actual_count: cnt,
+        enrolled_students: enrol,
+        rate_per_1000: Number(((cnt / enrol) * 1000).toFixed(2)),
+      };
+    });
+
+    const forecastScaled: EsotericForecastPoint[] = baseRun.forecast_series
+      .slice(0, effHorizon)
+      .map((pt, idx) => {
+        const refPt = refForecastSeries[idx] || pt;
+        const baseValRaw = pt.baseline_forecast * concernMult * scenarioMult;
+        const baseVal = Math.max(0, Math.round(baseValRaw));
+
+        const rawShift = (refPt.esoteric_raw - refPt.baseline_forecast) * residualBlend;
+        const esoRawScaled = Math.max(0, (pt.baseline_forecast + rawShift) * concernMult * scenarioMult);
+        const esoVal = Math.max(0, Math.round(esoRawScaled));
+
+        const scaleRatio =
+          refPt.esoteric_raw > 0.1 ? esoRawScaled / refPt.esoteric_raw : concernMult * scenarioMult;
+        const l80 = Math.max(0, Math.round(refPt.lower_80 * scaleRatio));
+        const u80 = Math.max(esoVal, Math.round(refPt.upper_80 * scaleRatio));
+        const l95 = Math.max(0, Math.round(refPt.lower_95 * scaleRatio));
+        const u95 = Math.max(u80, Math.round(refPt.upper_95 * scaleRatio));
+
+        const baseScale = pt.baseline_forecast > 0.1 ? baseValRaw / pt.baseline_forecast : concernMult * scenarioMult;
+        const baseLo = Math.max(0, Math.round(pt.baseline_lower * baseScale));
+        const baseHi = Math.max(baseVal, Math.round(pt.baseline_upper * baseScale));
+
+        const enrol = Math.max(
+          10,
+          Math.round(
+            pt.enrolled_students * enrolMult * (1 + (scen.enrolment_growth_pct || 0) / 100)
+          )
+        );
+        const maxTd = cadence === 'weekly' ? 5 : 25;
+        const td = Math.max(0, Math.min(maxTd, pt.teaching_days + (scen.teaching_days_delta || 0)));
+        const deltaCount = esoVal - baseVal;
+        const deltaPct = Number(((deltaCount / Math.max(1, baseVal)) * 100).toFixed(2));
+
+        return {
+          ...pt,
+          baseline_forecast: baseVal,
+          baseline_lower: baseLo,
+          baseline_upper: baseHi,
+          esoteric_forecast: esoVal,
+          esoteric_raw: Number(esoRawScaled.toFixed(2)),
+          lower_bound: piLevel === 95 ? l95 : l80,
+          upper_bound: piLevel === 95 ? u95 : u80,
+          lower_80: l80,
+          upper_80: u80,
+          lower_95: l95,
+          upper_95: u95,
+          delta_count: deltaCount,
+          delta_pct: deltaPct,
+          enrolled_students: enrol,
+          teaching_days: td,
+          rate_per_1000: Number(((esoVal / enrol) * 1000).toFixed(2)),
+          rough_levy_area: Number((refPt.rough_levy_area * Math.max(0.25, residualBlend)).toFixed(4)),
+          rough_sig_depth3: Number((refPt.rough_sig_depth3 * Math.max(0.25, residualBlend)).toFixed(4)),
+          hawkes_intensity: Number((refPt.hawkes_intensity * concernMult * scenarioMult).toFixed(3)),
+          dominant_driver:
+            admittedFeatures.length > 0
+              ? `${admittedFeatures[0].module_id.toUpperCase()} (${admittedFeatures[0].module_name})`
+              : 'Pure Anchor Baseline (Identity Floor)',
+        };
+      });
+
+    const esoTotal = forecastScaled.reduce((acc, p) => acc + p.esoteric_forecast, 0);
+    const baseTotal = forecastScaled.reduce((acc, p) => acc + p.baseline_forecast, 0);
+    const priorSlice = histScaled.slice(-effHorizon);
+    const priorTotal = Math.max(1, priorSlice.reduce((acc, p) => acc + p.actual_count, 0));
+    const yoyPct = Number((((esoTotal - priorTotal) / priorTotal) * 100).toFixed(1));
+    const netDelta = esoTotal - baseTotal;
+    const netDeltaPct = Number(((netDelta / Math.max(1, baseTotal)) * 100).toFixed(2));
+
+    // Sub-additive correlated horizon uncertainty scaling (sqrt(H) + 0.35 H law)
+    const stepHalfWidths = forecastScaled.map((p) =>
+      Math.max(1, ((piLevel === 95 ? p.upper_95 - p.lower_95 : p.upper_80 - p.lower_80) / 2))
+    );
+    const rmsHalfWidth = Math.sqrt(
+      stepHalfWidths.reduce((acc, w) => acc + w * w, 0) * (1 + 0.22 * Math.sqrt(effHorizon))
+    );
+    const esoLower = Math.max(0, Math.round(esoTotal - rmsHalfWidth));
+    const esoUpper = Math.max(esoTotal, Math.round(esoTotal + rmsHalfWidth));
+
+    const baseStepHalfWidths = forecastScaled.map((p) =>
+      Math.max(1, (p.baseline_upper - p.baseline_lower) / 2)
+    );
+    const baseRmsHalf = Math.sqrt(
+      baseStepHalfWidths.reduce((acc, w) => acc + w * w, 0) * (1 + 0.22 * Math.sqrt(effHorizon))
+    );
+    const baseLower = Math.max(0, Math.round(baseTotal - baseRmsHalf));
+    const baseUpper = Math.max(baseTotal, Math.round(baseTotal + baseRmsHalf));
+
+    const peakPt = [...forecastScaled].sort((a, b) => b.esoteric_forecast - a.esoteric_forecast)[0];
+
+    const btOrig = baseRun.walk_forward_backtest;
+    const btScaled = {
+      ...btOrig,
+      baseline_mae: Number((btOrig.baseline_mae * concernMult).toFixed(2)),
+      esoteric_mae: Number(
+        (
+          (btOrig.baseline_mae + (btOrig.esoteric_mae - btOrig.baseline_mae) * residualBlend) *
+          concernMult
+        ).toFixed(2)
+      ),
+      mae_delta_pct: Number((btOrig.mae_delta_pct * residualBlend).toFixed(2)),
+      baseline_rmse: Number((btOrig.baseline_rmse * concernMult).toFixed(2)),
+      esoteric_rmse: Number(
+        (
+          (btOrig.baseline_rmse + (btOrig.esoteric_rmse - btOrig.baseline_rmse) * residualBlend) *
+          concernMult
+        ).toFixed(2)
+      ),
+      baseline_surge_mae: Number((btOrig.baseline_surge_mae * concernMult).toFixed(2)),
+      esoteric_surge_mae: Number(
+        (
+          (btOrig.baseline_surge_mae +
+            (btOrig.esoteric_surge_mae - btOrig.baseline_surge_mae) * residualBlend) *
+          concernMult
+        ).toFixed(2)
+      ),
+      points: btOrig.points.map((p) => {
+        const bScaled = Math.max(0, Math.round(p.baseline * concernMult));
+        const eScaled = Math.max(
+          0,
+          Math.round((p.baseline + (p.esoteric - p.baseline) * residualBlend) * concernMult)
+        );
+        return {
+          ...p,
+          actual: Math.max(0, Math.round(p.actual * concernMult)),
+          baseline: bScaled,
+          esoteric: eScaled,
+        };
+      }),
+    };
+
+    return {
+      ...baseRun,
+      is_synthetic: activeDatasetSummary.is_synthetic,
+      governance_banner: activeDatasetSummary.governance_banner,
+      active_modules: activeModules,
+      horizon: effHorizon,
+      provision,
+      safeguarding_category: category,
+      prediction_interval: piLevel,
+      summary: {
+        ...baseRun.summary,
+        esoteric_total: esoTotal,
+        esoteric_lower: esoLower,
+        esoteric_upper: esoUpper,
+        baseline_total: baseTotal,
+        baseline_lower: baseLower,
+        baseline_upper: baseUpper,
+        prior_horizon_total: priorTotal,
+        yoy_change_pct: yoyPct,
+        net_esoteric_delta: netDelta,
+        net_esoteric_delta_pct: netDeltaPct,
+        peak_period_label: peakPt ? peakPt.period_label : baseRun.summary.peak_period_label,
+        peak_period_count: peakPt ? peakPt.esoteric_forecast : 0,
+      },
+      conditioning_diagnostics: {
+        ...baseRun.conditioning_diagnostics,
+        n_candidate_esoteric_features: nCand,
+        n_admitted_esoteric_features: nAdm,
+        n_quarantined_esoteric_features: Math.max(0, nCand - nAdm),
+        identity_floor_active: identityFloor,
+        admitted_features: admittedFeatures,
+      },
+      walk_forward_backtest: btScaled,
+      historical_series: histScaled,
+      forecast_series: forecastScaled,
+    };
   },
 };
 

@@ -11,10 +11,12 @@ import {
   CheckCircle2,
   Building2,
   Lock,
+  Sparkles,
 } from 'lucide-react';
 import { apiClient } from './lib/api';
 import { OverviewPage } from './pages/OverviewPage';
 import { ForecastExplorerPage } from './pages/ForecastExplorerPage';
+import { EsotericForecastPage } from './pages/EsotericForecastPage';
 import { ModelComparisonPage } from './pages/ModelComparisonPage';
 import { TrendsInsightsPage } from './pages/TrendsInsightsPage';
 import { DataManagementPage } from './pages/DataManagementPage';
@@ -29,7 +31,14 @@ import type {
   TrendsInsightsResponse,
 } from './types/api';
 
-type NavTab = 'overview' | 'explorer' | 'comparison' | 'trends' | 'telemetry' | 'data';
+type NavTab =
+  | 'overview'
+  | 'explorer'
+  | 'esoteric_forecast'
+  | 'comparison'
+  | 'trends'
+  | 'telemetry'
+  | 'data';
 
 const DEFAULT_SCENARIO: ScenarioAssumptions = {
   enrolment_growth_pct: 0,
@@ -171,6 +180,11 @@ export function App() {
   const navItems: { id: NavTab; label: string; icon: React.ReactNode }[] = [
     { id: 'overview', label: 'Overview', icon: <LayoutDashboard className="h-4 w-4" /> },
     { id: 'explorer', label: 'Forecast Explorer', icon: <Sliders className="h-4 w-4" /> },
+    {
+      id: 'esoteric_forecast',
+      label: 'Esoteric Forecasting',
+      icon: <Sparkles className="h-4 w-4" />,
+    },
     { id: 'comparison', label: 'Model Comparison', icon: <Scale className="h-4 w-4" /> },
     { id: 'trends', label: 'Trends & Insights', icon: <TrendingUp className="h-4 w-4" /> },
     { id: 'telemetry', label: 'Early-Warning Telemetry', icon: <Activity className="h-4 w-4" /> },
@@ -322,6 +336,18 @@ export function App() {
                 onChangeScenario={setScenario}
                 onResetScenario={() => setScenario(DEFAULT_SCENARIO)}
                 isLoading={isLoading}
+              />
+            )}
+
+            {activeTab === 'esoteric_forecast' && (
+              <EsotericForecastPage
+                datasetSummary={datasetSummary}
+                selectedProvision={selectedProvision}
+                onSelectProvision={setSelectedProvision}
+                selectedCategory={selectedCategory}
+                onSelectCategory={setSelectedCategory}
+                selectedPI={selectedPI}
+                onSelectPI={setSelectedPI}
               />
             )}
 
