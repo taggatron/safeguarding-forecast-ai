@@ -15,3 +15,4 @@ __all__ = [
     "EsotericForecastEngine",
     "esoteric_forecast_engine",
 ]
+
